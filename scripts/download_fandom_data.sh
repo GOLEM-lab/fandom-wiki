@@ -13,10 +13,10 @@ while [[ ! -z "$@" ]]; do
     esac
 done
 
-while read LINE_READ; do
+function process_line {
 
-    LINE_READ="${LINE_READ//#*/}"
-    [ -z "$LINE_READ" ] && continue
+    LINE_READ="$1"
+    [ -z "$LINE_READ" ] && return 1
         
     WIKITEXT=$(curl "${LINE_READ}?action=edit" 2>/dev/null | python "${EXECUTION_PATH}/../src/fandom_extraction/fandom_extract.py")
     STATUS=$?
@@ -41,10 +41,12 @@ while read LINE_READ; do
         
     fi
 
-    
+}
+
+while read LINE_READ; do
+
+    LINE_READ="${LINE_READ//#*/}"
+    process_line "$LINE_READ"
 
 done
-
-# Last line
-LINE_READ="${LINE_READ//#*/}"
-echo "$LINE_READ"
+LINE_READ="${LINE_READ//#*/}" && process_line "$LINE_READ" # Last line
