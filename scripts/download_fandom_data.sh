@@ -15,38 +15,40 @@ done
 
 function process_line {
 
-    LINE_READ="$1"
+    LINE_READ="$1" # Get function params
+
+    # Strip comments and check if line is empty
+    LINE_READ="${LINE_READ//#*/}"
     [ -z "$LINE_READ" ] && return 1
         
+    # Download page and parse HTML to extract WikiText
     WIKITEXT=$(curl "${LINE_READ}?action=edit" 2>/dev/null | python "${EXECUTION_PATH}/../src/fandom_extraction/fandom_extract.py")
     STATUS=$?
 
-    if (( $STATUS == 0 )); then
+    # Check if download and extraction went fine
+    if (( $STATUS != 0 )); then 
+        return 2
+    fi
 
-        if [ ! -z "$OUT_DIR" ]; then
+    # Write wikitext
+    if [ ! -z "$OUT_DIR" ]; then
 
-            # Extract Wiki and Article Name
-            WIKI_NAME=$(echo "$LINE_READ" | grep -oP "https://(.*)\.fandom")
-            ART_NAME=$(echo "$LINE_READ" | grep -oP "wiki/(.*)$") 
+        # Extract Wiki and Article Name
+        WIKI_NAME=$(echo "$LINE_READ" | grep -oP "https://(.*)\.fandom")
+        ART_NAME=$(echo "$LINE_READ" | grep -oP "wiki/(.*)$") 
 
-            WIKI_NAME="${WIKI_NAME//"https://"/}"
-            WIKI_NAME="${WIKI_NAME//".fandom"/}"
-            ART_NAME="${ART_NAME//"wiki/"/}"
+        WIKI_NAME="${WIKI_NAME//"https://"/}"
+        WIKI_NAME="${WIKI_NAME//".fandom"/}"
+        ART_NAME="${ART_NAME//"wiki/"/}"
 
-            [ ! -d "${OUT_DIR}/${WIKI_NAME}" ] && mkdir -p "${OUT_DIR}/${WIKI_NAME}" 
-            echo "$WIKITEXT" > "${OUT_DIR}/${WIKI_NAME}/${ART_NAME}.txt"
-        else
-            echo "$WIKITEXT"
-        fi
-        
+        [ ! -d "${OUT_DIR}/${WIKI_NAME}" ] && mkdir -p "${OUT_DIR}/${WIKI_NAME}" 
+        echo "$WIKITEXT" > "${OUT_DIR}/${WIKI_NAME}/${ART_NAME}.txt"
+    else
+        echo "$WIKITEXT"
     fi
 
 }
 
-while read LINE_READ; do
-
-    LINE_READ="${LINE_READ//#*/}"
-    process_line "$LINE_READ"
-
-done
-LINE_READ="${LINE_READ//#*/}" && process_line "$LINE_READ" # Last line
+# Process lines
+while read LINE_READ; do process_line "$LINE_READ"; done
+process_line "$LINE_READ" # Last line
