@@ -1,9 +1,8 @@
 """TODO complete documentation/license"""
 
-from dataclasses import fields
-from sqlite3 import paramstyle
+from pipes import Template
 import regex
-import operator as op
+
 
 
 class WikitextPatterns(object):
@@ -34,10 +33,13 @@ class WikitextPatterns(object):
     Templates.XML_OPEN_TAG = "<{elem_name}(?:\\s*+{att_pattern})*+\\s*+>"
     Templates.XML_CLOSE_TAG = "</{elem_name}\\s*+>"
     Templates.XML_UNBALANCED_TAG = "<{elem_name}(?:\\s*+{att_pattern})*+\\s*+/>"
+    Templates.XML_LONE_TAG = "<{elem_name}\\s*+>"
+
 
     XML_OPEN_TAG = Templates.XML_OPEN_TAG.format(**_XML_NAME_ATTR_MAP)
     XML_CLOSE_TAG = Templates.XML_CLOSE_TAG.format(elem_name=XML_NAME)
     XML_UNBALANCED_TAG = Templates.XML_UNBALANCED_TAG.format(**_XML_NAME_ATTR_MAP)
+    XML_LONE_TAG = Templates.XML_LONE_TAG.format(**_XML_NAME_ATTR_MAP)
 
     ## XML Elements
     XML_ELEM = (
@@ -63,7 +65,9 @@ class WikitextPatterns(object):
     )
 
 
-    XML_COMMENT = "<!--(?:(?!-->).)*?-->"
+    XML_COMMENT = "(?P<xml_comment><!--(?:(?!-->).)*?-->)"
+
+    XML_STUFF = "(?P<xml_stuff>{}|{}|{}|{})".format(XML_COMMENT,XML_UNBALANCED_TAG,XML_LONE_TAG,XML_ELEM)
 
     # WIKITEXT Template
     WT_TEMPLATE = (
@@ -72,8 +76,19 @@ class WikitextPatterns(object):
 
     "(?:{(?&wt_template)}" +                                 
     "|(?&wt_template)" +
-    "|{}".format(XML_COMMENT)+
-    "|{}".format(XML_ELEM) +                                          
+    "|{}".format(XML_STUFF)+                                         
+    "|[^}{])*?" +                                     
+
+    "}})"                                                  
+    )
+
+    Templates.WT_TEMPLATE = (
+    "(" +                                    
+    "{{\\s*?{template_name}" +                              
+
+    "(?:{"+WT_TEMPLATE+"}" +                                 
+    "|(?&wt_template)" +
+    "|(?&xml_stuff)" +                                     
     "|[^}{])*?" +                                     
 
     "}})"                                                  
@@ -81,7 +96,6 @@ class WikitextPatterns(object):
 
     # WIKITEXT Link
     WT_LINK = "\\[\\[(?P<wiki_ref>.*?)(?:\\|(?P<wiki_ref_display>.*?))?\\]\\]"
-
 
     # WIKITEXT Value
     WT_VALUE = "(?P<wt_value>(?:{"+WT_TEMPLATE+"}|(?&wt_template)|"+WT_LINK+"|.)*?)"
@@ -115,18 +129,25 @@ class WikitextPatterns(object):
         self.XML_COMMENT = regex.compile(self.XML_COMMENT, regex.DOTALL | regex.V1)
         self.XML_ELEM = regex.compile(self.XML_ELEM, regex.DOTALL | regex.V1)
         self.XML_UNBALANCED_TAG = regex.compile(self.XML_UNBALANCED_TAG, regex.DOTALL | regex.V1)
+        self.XML_STUFF = regex.compile(self.XML_STUFF, regex.DOTALL | regex.V1)
+
 
         # Wikitext
         self.WT_TEMPLATE = regex.compile(self.WT_TEMPLATE, regex.DOTALL | regex.V1)
         self.WT_TEMPLATE_FIELD = regex.compile(self.WT_TEMPLATE_FIELD, regex.DOTALL | regex.V1)
         self.WT_LINK = regex.compile(self.WT_LINK, regex.DOTALL | regex.V1)
         
-    def extract_templates(self,text):
+    def extract_templates(self,text,*,template_name=None,nested=False):
         """TODO Docstring"""
-        matches = self.WT_TEMPLATE.findall(text,overlapped=True)
-        
+        template_regex = self.WT_TEMPLATE
+        if template_name is not None:
+            template_regex = self.Templates.WT_TEMPLATE.replace("{template_name}","(?:{})(?:\\s|\\||:|}})".format(template_name))
+            template_regex = regex.compile(template_regex,regex.DOTALL | regex.V1)
+            
+        matches = template_regex.findall(text,overlapped=nested)
+
         if matches:
-            matches , _ = zip(*matches) # Extract only first group
+            matches , *_ = zip(*matches) # Extract only first group
 
         return matches
 

@@ -8,13 +8,12 @@ import json
 import sys
 import regex
 import itertools as itools
-import operator as op
 
 # Exported names
 wikitext_patterns = WikitextPatterns()
-def extract_templates(text):
+def extract_templates(text,*,template_name=None,nested=False):
     """TODO Docstring"""
-    matches = wikitext_patterns.extract_templates(text)
+    matches = wikitext_patterns.extract_templates(text,template_name=template_name,nested=nested)
     templates = list(map(wikitext_patterns.template_to_dict,matches))
     
     return templates
@@ -26,8 +25,7 @@ def clean_comments(text):
 
 def clean_xml(text):
     """TODO Docstring"""
-    text = wikitext_patterns.XML_ELEM.sub("",text)
-    text = wikitext_patterns.XML_UNBALANCED_TAG.sub("",text)
+    text = wikitext_patterns.XML_STUFF.sub("",text)
     return text
 
 def substitute_wt_links(text,use_display_when_possible=False):
@@ -58,8 +56,10 @@ def _build_parser():
 
     # Template extraction 
     parser.add_argument("-t","--templates",dest="templates",type=str,nargs="*",help="Name of the template to extract.")
+    parser.add_argument("--nested",dest="nested",action="store_true",help="Extract nested WikiText elements. Significantly more computationally expensive.")
     parser.add_argument("--template_param_wl",type=str,nargs="*",default=[".*"],help="Template named params whitelist (which to extract, ignoring the rest; default all).")
     parser.add_argument("--template_param_bl",type=str,nargs="*",default=[".++."],help="Template named params blacklist (which to ignore, extracting the rest; default none).")
+    parser.set_defaults(nested=False)
 
     return parser
 
@@ -82,15 +82,16 @@ if __name__ == "__main__":
         text = substitute_wt_links(text,args.wt_links_to_display_text)
 
     if args.templates:
-        templates = extract_templates(text)
+        template_criteria = "|".join(args.templates)
+        if not template_criteria: template_criteria = None
+        templates = extract_templates(text,template_name=template_criteria,nested=args.nested)
 
         # TODO: Abstract this maybe
-        template_criteria = regex.compile("|".join(args.templates),regex.DOTALL | regex.V1)
         template_param_wl = regex.compile("|".join(args.template_param_wl),regex.DOTALL | regex.V1)
         template_param_bl = regex.compile("|".join(args.template_param_bl),regex.DOTALL | regex.V1)
 
-        filtered_templates = [template for template in templates if template_criteria.match(template["template_name"])]
-        for template in filtered_templates:
+        filtered_templates = templates
+        for template in templates:
             params = template["params"]
             keep_keys = filter(template_param_wl.match,params)
             keep_keys = itools.filterfalse(template_param_bl.match,keep_keys)
@@ -98,7 +99,7 @@ if __name__ == "__main__":
             
             template["params"] = {p_name: p_value for p_name, p_value in params.items() if p_name in keep_keys}
             
-        template_dict = dict(templates=filtered_templates)
+        template_dict = dict(templates=templates)
         json.dump(template_dict,sys.stdout)
     else:
         sys.exit("No extraction operation selected, please check --help.")
