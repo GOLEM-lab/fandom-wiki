@@ -1,2 +1,4 @@
 __pycache__
+__init__.py
 data/wikis
+data/extraction

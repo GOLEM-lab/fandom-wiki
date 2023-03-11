@@ -47,16 +47,14 @@ def _build_parser():
     parser.set_defaults(substitute_wt_links=False)
     parser.set_defaults(wt_links_to_display_text=False)
 
-    parser.add_argument("--clean_comments",dest="clean_comments",action="store_true",help="Clean WT source comments (Default).")
     parser.add_argument("--no-clean_comments",dest="no-clean_comments",action="store_false",help="Do not clean WT source comments.")
     parser.add_argument("--clean_xml",dest="clean_xml",action="store_true",help="Clean xml elements from source.")
-    parser.add_argument("--no-clean_xml",dest="no-clean_xml",action="store_false",help="Do not clean xml elements from source (Default).")
     parser.set_defaults(clean_comments=True)
     parser.set_defaults(clean_xml=False)
 
     # Template extraction 
     parser.add_argument("-t","--templates",dest="templates",type=str,nargs="*",help="Name of the template to extract.")
-    parser.add_argument("--nested",dest="nested",action="store_true",help="Extract nested WikiText elements. Significantly more computationally expensive.")
+    parser.add_argument("--nested",action="store_true",help="Extract nested WikiText elements. Significantly more computationally expensive.")
     parser.add_argument("--template_param_wl",type=str,nargs="*",default=[".*"],help="Template named params whitelist (which to extract, ignoring the rest; default all).")
     parser.add_argument("--template_param_bl",type=str,nargs="*",default=[".++."],help="Template named params blacklist (which to ignore, extracting the rest; default none).")
     parser.set_defaults(nested=False)
@@ -101,6 +99,7 @@ if __name__ == "__main__":
             
         template_dict = dict(templates=templates)
         json.dump(template_dict,sys.stdout)
+        
     else:
         sys.exit("No extraction operation selected, please check --help.")
 

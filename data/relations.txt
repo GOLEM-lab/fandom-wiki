@@ -1,0 +1,44 @@
+*character:has_parent:character
+Who is the father of {character}?
+Who is the mother of {character}?
+Who is {character}'s father?
+Who is {character}'s mother?
+
+*character:has_nationality:nationality
+What is the nationality of {character}?
+Where is {character} from?
+What country is {character} from?
+What is the country of nationality of {character}?
+
+*character:birthdate:datetime
+When was {character} born?
+What is the date of {character}'s birth?
+
+*character:birthplace:place
+Where was {character} born?
+What is {character} birthplace?
+
+*character:skin_color:color
+What color is {character} skin?
+What is the color of {character} skin?
+Of what color is {character}'s skin?
+What colour is {character} skin?
+What is the colour of {character} skin?
+Of what colour is {character}'s skin?
+
+*character:eye_color:color
+What color are {character} eyes?
+What are the color of {character} eyes?
+Of what color are {character}'s eyes?
+What colour are {character} eyes?
+What are the colour of {character} eyes?
+Of what colour are {character}'s eyes?
+
+*character:hair_color:color
+What color is {character} hair?
+What is the color of {character} hair?
+Of what color is {character}'s hair?
+What colour is {character} hair?
+What is the colour of {character} hair?
+Of what colour is {character}'s hair?
+
