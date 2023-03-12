@@ -1,3 +1,4 @@
+from ast import arg
 import transformers
 import pandas as pd
 import numpy as np
@@ -5,6 +6,7 @@ import numpy as np
 from difflib import SequenceMatcher
 
 from argparse import ArgumentParser
+import tqdm
 
 import typing
 import operator as op
@@ -298,8 +300,11 @@ def _build_parser():
     system_group = parser.add_argument_group("System options")
     system_group.add_argument("-lm", "--language_model", dest="language_model", default="deepset/roberta-large-squad2", help="QA Language model to use (HuggingFace).")
     system_group.add_argument("-bs", "--batch_size", dest="batch_size", type=int, default=32, help="Batch-size to use (inference).")
+    system_group.add_argument("-fp16", dest="fp16", action="store_true", help="Use Half-precision for faster inference and lower memory usage. Only works for modern GPUs.")
     system_group.add_argument("--max_seq_len", type=int, default=384, help="Maximum sequence length per processed context chunk. Higher values are computationally more expensive. May help with long distance dependencies in relations.")
     system_group.add_argument("--doc_stride", type=int, default=128, help="Maximum overlap length between neighbouring chunks. Higher values are computationally more expensive. May help with long distance dependencies in relations.")
+    system_group.set_defaults(fp16=False)
+
 
     return parser
 
@@ -318,9 +323,17 @@ if __name__ == "__main__":
 
     # Initialize qa system
     qa = transformers.pipeline(model=args.language_model,device=0)
+    if args.fp16: qa.model.half()
 
     verbalizations = generate_verbalizations(entity_dict,relation_dict)
     answers = generate_answers(context,verbalizations,qa,config=args)
+
+    # Make progress bar
+    count_verbalizations = [len(entity_dict[cl])*len(relation_dict[cl]) 
+                                for cl in (set(entity_dict) & set(relation_dict))]
+    count_verbalizations = sum(count_verbalizations)
+    answers = tqdm.tqdm(answers,total=count_verbalizations)
+
     relations = relations_from_answers(answers,
                                         external_conf_reduction=args.confidence_reduction,
                                         internal_conf_reduction=args.confidence_reduction_internal,
