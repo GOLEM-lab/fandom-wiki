@@ -1,9 +1,4 @@
 import transformers
-import torch
-import torch_tensorrt
-from optimum.utils.input_generators import DummyTextInputGenerator
-from optimum.utils import NormalizedTextConfig
-
 import pandas as pd
 import numpy as np
 
@@ -118,39 +113,14 @@ def generate_answers(context,verbalizations,qa,config):
 
 def init_pipeline_system(config):
     
-    # Get model config
-    model_config = transformers.AutoConfig.from_pretrained(config.language_model)
-    model_config.torchscript = True
-    config_norm = NormalizedTextConfig(model_config)
-
     # Instantiate pipeline
-    pipeline = transformers.pipeline(model=config.language_model,
-                                    device=0,
-                                    config=model_config)
+    model_config = transformers.AutoConfig.from_pretrained(config.language_model)
+    pipeline = transformers.pipeline(model=config.language_model,device=0,
+                                    config=model_config,)
 
     # Set pipeline working mode
     pipeline.model.eval()
     if config.fp16: pipeline.model.half()
-
-    if config.inference_mode != "eager": # Trace
-        # Generate dummy input for tracing
-        dummy_input = DummyTextInputGenerator("question-answering",config_norm).generate("input_ids")
-        dummy_seq = DummyTextInputGenerator("question-answering",config_norm).generate("segments_ids")
-
-        if config.inference_mode == "tensorrt": # TensorRT
-
-            enabled_precisions = {torch.float}
-            if config.fp16: enabled_precisions.add(torch.half)
-            
-            pipeline.model = torch_tensorrt.compile(pipeline.model,
-                                                inputs=[dummy_input.cuda(),dummy_seq.cuda()],
-                                                enabled_precisions=enabled_precisions,)
-
-        elif config.inference_mode == "torch_compiled":
-
-            pipeline.model = torch.jit.trace(pipeline.model,
-                                            example_inputs=[dummy_input.cuda(),dummy_seq.cuda()],
-                                            strict=False)
 
     # Set call options
     pipeline.__call__ = ftools.partial(pipeline.__call__,
@@ -338,7 +308,6 @@ def _build_parser():
     system_group.add_argument("-lm", "--language_model", dest="language_model", default="deepset/roberta-large-squad2", help="QA Language model to use (HuggingFace).")
     system_group.add_argument("-bs", "--batch_size", dest="batch_size", type=int, default=32, help="Batch-size to use (inference).")
     system_group.add_argument("-fp16", dest="fp16", action="store_true", help="Use Half-precision for faster inference and lower memory usage. Only works for modern GPUs (CUDA capability > 7.0).")
-    system_group.add_argument("--inference_mode", choices=("eager","torch_compiled","tensorrt"),default="eager", help="What inference mode to run at.")
     system_group.add_argument("--max_seq_len", type=int, default=384, help="Maximum sequence length per processed context chunk. Higher values are computationally more expensive. May help with long distance dependencies in relations.")
     system_group.add_argument("--doc_stride", type=int, default=128, help="Maximum overlap length between neighbouring chunks. Higher values are computationally more expensive. May help with long distance dependencies in relations.")
     system_group.set_defaults(fp16=False)
