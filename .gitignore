@@ -1,5 +1,8 @@
 __pycache__
 __init__.py
 data/wikis
+data/fanfiction
 data/extraction
+results/
 env/
+test/

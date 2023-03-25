@@ -1,8 +1,39 @@
-*character:has_parent:character
+*character:has_father:character
 Who is the father of {character}?
-Who is the mother of {character}?
 Who is {character}'s father?
+
+*character:has_mother:character
+Who is the mother of {character}?
 Who is {character}'s mother?
+
+*character:has_son:character
+Who is the son of {character}?
+Who is {character}'s son?
+
+*character:has_daughter:character
+Who is the daughter of {character}?
+Who is {character}'s daughter?
+
+*character:friend_of:character
+Who is a friend of {character}?
+Who is {character}'s friend?
+
+*character:rival_of:character
+Who is a rival of {character}?
+Who is {character}'s rival?
+
+*character:enemy_of:character
+Who is a enemy of {character}?
+Who is {character}'s enemy?
+
+*character:has_occupation:occupation
+What does {character} do?
+What is {character}'s job?
+What is {character}'s occupation?
+
+*character:affiliated_to:affiliation
+Where is {character} affiliated to?
+What is {character}'s affiliation?
 
 *character:has_nationality:nationality
 What is the nationality of {character}?
