@@ -1,3 +1,5 @@
+from ..utils.relation_utils import read_relations,generate_verbalizations
+
 import transformers
 import pandas as pd
 import numpy as np
@@ -17,61 +19,18 @@ import json
 import io
 import sys
 
-def read_relations(relations : io.TextIOBase):
-    
-    relation_list = []
-    for line_i, line in enumerate(relations.readlines()):
-        line = line.strip()
-        if not line:
-            continue
 
-        if line.startswith("*"): # New relation
-            cl_left, rel_name, cl_right = line[1:].split(":")
-            rel_spec = dict(cl_left=cl_left,
-                            rel_name=rel_name,
-                            cl_right=cl_right,
-                            verbalizations=list())
-            relation_list.append(rel_spec)
-        else:   # Verbalization
-            if not relation_list:
-                raise RuntimeError(f"Invalid relation file format in line {line_i}. Verbalization with no active relation.\n"+
-                                    "Verbalizations must be preceded by a relation spec (which has format \"*<class_left>:<relation_name>:<class_right>\").")
-
-            if f"{cl_left}" not in line:
-                raise RuntimeError(f"Invalid relation file format in line {line_i}. Missing entity format tag \"{{{cl_left}}}\" .\n"+
-                                    "Verbalizations must contain an entity format tag with format \"{<class_left>}\" somewhere in the sentence.")
-
-            relation_list[-1]["verbalizations"].append(line)
-            
-    relations = pd.DataFrame(relation_list)
-    return relations
-
-def generate_verbalizations(entities : pd.DataFrame, relations : pd.DataFrame):
-
-    ent_rel = pd.merge(entities,relations,left_on="instance_of",right_on="cl_left")
-    ent_rel = ent_rel.drop("instance_of",axis=1)
-    formated = ent_rel.apply(lambda x: 
-            list(map(
-                op.methodcaller("format_map",{x.cl_left : x.entity_label}),
-                x.verbalizations)),
-        axis=1)
-    formated.rename("verbalizations",inplace=True)
-    
-    res =  pd.concat((ent_rel[["entity_label","rel_name"]],formated),axis=1)
-    return res
-
-def generate_answers(context,verbalizations : pd.DataFrame ,qa,config):
+def generate_answers(context, verbalizations : pd.DataFrame ,qa,config):
     
     # Unroll questions
     all_verb = list(itools.chain(*verbalizations.verbalizations))
-    
     verb_lengths = verbalizations.verbalizations.apply(len)
     verb_end = np.cumsum(verb_lengths)
     verb_start = np.concatenate(([0],verb_end))
 
     verb_ranges = (range(s,e) for s,e in zip(verb_start,verb_end))
 
-    # Run QA system
+    # Run QA system # TODO manual batching to avoid OOM errors
     ans = qa(question=all_verb,context=context)
 
     # Align with questions
@@ -133,7 +92,7 @@ def _build_parser():
     # System settings
     system_group = parser.add_argument_group("System options")
     system_group.add_argument("-lm", "--language_model", dest="language_model", default="deepset/roberta-large-squad2", help="QA Language model to use (HuggingFace).")
-    system_group.add_argument("-bs", "--batch_size", dest="batch_size", type=int, default=32, help="Batch-size to use (inference).")
+    system_group.add_argument("-bs", "--batch_size", dest="batch_size", type=int, default=1, help="Batch-size to use (inference).")
     system_group.add_argument("-fp16", dest="fp16", action="store_true", help="Use Half-precision for faster inference and lower memory usage. Only works for modern GPUs (CUDA capability > 7.0).")
     system_group.add_argument("--max_seq_len", type=int, default=384, help="Maximum sequence length per processed context chunk. Higher values are computationally more expensive. May help with long distance dependencies in relations.")
     system_group.add_argument("--doc_stride", type=int, default=128, help="Maximum overlap length between neighbouring chunks. Higher values are computationally more expensive. May help with long distance dependencies in relations.")

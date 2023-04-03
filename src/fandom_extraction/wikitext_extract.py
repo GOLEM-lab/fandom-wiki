@@ -1,6 +1,6 @@
 """TODO complete documentation/license"""
 
-from wikitext_regex import WikitextPatterns
+from .wikitext_regex import WikitextPatterns
 
 from argparse import ArgumentParser
 import json

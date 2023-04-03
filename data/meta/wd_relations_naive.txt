@@ -1,0 +1,273 @@
+*character:P1775:Thing
+{character} follower of?
+
+*character:P1780:Thing
+{character} school of?
+
+*character:P1787:Thing
+{character} art-name?
+
+*character:P1853:Thing
+{character} blood type?
+
+*character:P1884:Thing
+{character} hair color?
+
+*character:P2067:Thing
+{character} mass?
+
+*character:P2389:Thing
+{character} organization directed by the office or position?
+
+*character:P2416:Thing
+{character} sports discipline competed in?
+
+*character:P2650:Thing
+{character} interested in?
+
+*character:P3091:Thing
+{character} mount?
+
+*character:P3205:Thing
+{character} patient of?
+
+*character:P3438:Thing
+{character} vehicle normally used?
+
+*character:P5096:Thing
+{character} member of the crew of?
+
+*character:P8839:Thing
+{character} hairstyle / hairlength?
+
+*character:P8852:Thing
+{character} facial hair?
+
+*character:P19:Thing
+{character} place of birth?
+
+*character:P20:Thing
+{character} place of death?
+
+*character:P21:Thing
+{character} sex or gender?
+
+*character:P27:Thing
+{character} country of citizenship?
+
+*character:P39:Thing
+{character} position held?
+
+*character:P53:Thing
+{character} family?
+
+*character:P54:Thing
+{character} member of sports team?
+
+*character:P69:Thing
+{character} educated at?
+
+*character:P91:Thing
+{character} sexual orientation?
+
+*character:P97:Thing
+{character} noble title?
+
+*character:P102:Thing
+{character} member of political party?
+
+*character:P103:Thing
+{character} native language?
+
+*character:P106:Thing
+{character} occupation?
+
+*character:P108:Thing
+{character} employer?
+
+*character:P136:Thing
+{character} genre?
+
+*character:P140:Thing
+{character} religion or worldview?
+
+*character:P172:Thing
+{character} ethnic group?
+
+*character:P410:Thing
+{character} military rank?
+
+*character:P413:Thing
+{character} position played on team / speciality?
+
+*character:P511:Thing
+{character} honorific prefix?
+
+*character:P512:Thing
+{character} academic degree?
+
+*character:P550:Thing
+{character} chivalric order?
+
+*character:P551:Thing
+{character} residence?
+
+*character:P552:Thing
+{character} handedness?
+
+*character:P569:Thing
+{character} date of birth?
+
+*character:P570:Thing
+{character} date of death?
+
+*character:P607:Thing
+{character} conflict?
+
+*character:P641:Thing
+{character} sport?
+
+*character:P734:Thing
+{character} family name?
+
+*character:P735:Thing
+{character} given name?
+
+*character:P742:Thing
+{character} pseudonym?
+
+*character:P800:Thing
+{character} notable work?
+
+*character:P802:Thing
+{character} student?
+
+*character:P803:Thing
+{character} professorship?
+
+*character:P937:Thing
+{character} work location?
+
+*character:P1035:Thing
+{character} honorific suffix?
+
+*character:P1049:Thing
+{character} worshipped by?
+
+*character:P1050:Thing
+{character} medical condition?
+
+*character:P1066:Thing
+{character} student of?
+
+*character:P1196:Thing
+{character} manner of death?
+
+*character:P1303:Thing
+{character} instrument?
+
+*character:P1308:Thing
+{character} officeholder?
+
+*character:P1327:Thing
+{character} partner in business or sport?
+
+*character:P1340:Thing
+{character} eye color?
+
+*character:P1344:Thing
+{character} participant in?
+
+*character:P1412:Thing
+{character} languages spoken, written or signed?
+
+*character:P1429:Thing
+{character} has pet?
+
+*character:P1449:Thing
+{character} nickname?
+
+*character:P1477:Thing
+{character} birth name?
+
+*character:P1543:Thing
+{character} monogram?
+
+*character:P1559:Thing
+{character} name in native language?
+
+*character:P1576:Thing
+{character} lifestyle?
+
+*character:P22:Thing
+{character} father?
+
+*character:P25:Thing
+{character} mother?
+
+*character:P26:Thing
+{character} spouse?
+
+*character:P40:Thing
+{character} child?
+
+*character:P451:Thing
+{character} unmarried partner?
+
+*character:P1038:Thing
+{character} relative?
+
+*character:P1290:Thing
+{character} godparent?
+
+*character:P1971:Thing
+{character} number of children?
+
+*character:P3373:Thing
+{character} sibling?
+
+*character:P3448:Thing
+{character} stepparent?
+
+*character:P8810:Thing
+{character} parent?
+
+*character:P101:Thing
+{character} field of work?
+
+*character:P463:Thing
+{character} member of?
+
+*character:P1142:Thing
+{character} political ideology?
+
+*character:P1387:Thing
+{character} political alignment?
+
+*character:P1399:Thing
+{character} convicted of?
+
+*character:P1416:Thing
+{character} affiliation?
+
+*character:P127:Thing
+{character} owned by?
+
+*character:P170:Thing
+{character} creator?
+
+*character:P748:Thing
+{character} appointed by?
+
+*character:P1029:Thing
+{character} crew member(s)?
+
+*character:P1039:Thing
+{character} kinship to subject?
+
+*character:P2842:Thing
+{character} place of marriage?
+
+*character:P6886:Thing
+{character} writing language?
+
