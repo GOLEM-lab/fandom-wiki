@@ -36,7 +36,7 @@ if __name__ == "__main__":
             relation_ids.append(rel_id)
 
     data = dict(left_entity=left_entities,
-                rel_id=relation_ids,
+                relation=relation_ids,
                 right_entity=right_entities,
                 context=context)
     data_df = pd.DataFrame(data)

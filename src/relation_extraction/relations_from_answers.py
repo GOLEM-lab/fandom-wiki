@@ -204,7 +204,7 @@ if __name__ == "__main__":
     # Filter poor confidence
     relations = itools.filterfalse(lambda rel: rel[3] < args.confidence_threshold,relations) 
 
-    df_columns = ["entity1","relation_name","entity2"]
+    df_columns = ["left_entity","relation","right_entity"]
     if args.include_confidence: df_columns.append("confidence")
 
     df = pd.DataFrame(dict(zip(df_columns,zip(*relations))))

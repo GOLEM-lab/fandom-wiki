@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
 
     if not args.oos_relations:
-        eval_df_mask = eval_df.rel_id.apply(set(rel_df["rel_name"].values).__contains__)
+        eval_df_mask = eval_df.relation.apply(set(rel_df["rel_name"].values).__contains__)
         eval_df = eval_df[eval_df_mask]
 
     ans = eval_df.groupby("context",group_keys=True).progress_apply(qa4eval.answers_for_context)
