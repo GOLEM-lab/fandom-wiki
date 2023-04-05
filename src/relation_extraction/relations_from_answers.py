@@ -9,8 +9,11 @@ import itertools as itools
 import operator as op
 import typing
 
-import sys
 import json
+import ijson
+
+import sys
+
 
 def _build_parser():
     parser = ArgumentParser()
@@ -173,8 +176,9 @@ def relations_from_answers(answers : dict,
                             merge_threshold=0.9,
                             top_k = -1):
     relations = []
-    for relation,answer_dict1 in answers.items():
-        for entity, answer_dict2  in answer_dict1.items():
+    for relation,answer_dict1 in answers:
+        for entity  in answer_dict1.keys():
+            answer_dict2 = answer_dict1[entity]
 
             answer_list = map(op.itemgetter("answers"),answer_dict2)
             answer_list = map(op.methodcaller("__getitem__",slice(top_k)),answer_list)
@@ -193,12 +197,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     with open(args.answers,"r") as answer_file:
-        answers = json.load(answer_file)
-
-    relations = relations_from_answers(answers,
-                                        external_conf_reduction=args.confidence_reduction,
-                                        internal_conf_reduction=args.confidence_reduction_internal,
-                                        merge_threshold=args.relation_merge_threshold,
+        answers = ijson.kvitems(answer_file,"")
+        relations = relations_from_answers(answers,
+                                            external_conf_reduction=args.confidence_reduction,
+                                            internal_conf_reduction=args.confidence_reduction_internal,
+                                            merge_threshold=args.relation_merge_threshold,
                                         top_k=args.relations_per_question)
 
     # Filter poor confidence

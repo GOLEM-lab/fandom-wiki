@@ -2,6 +2,7 @@ from . import qa
 from ..utils.relation_utils import read_relations, generate_verbalizations
 
 import pandas as pd
+import numpy as np
 import transformers
 
 from argparse import ArgumentParser
@@ -22,8 +23,11 @@ def _build_parser():
     rel_group.add_argument("--relations",required=True,help="Filepath of file with a list of relations: a relation spec \"*<class_left>:<relation_name>:<class_right>\" followed by one or more verbalizations.")
     rel_group.add_argument("--OoS_relations",dest="oos_relations",action="store_true",help="Predict relations for instances whose target relations are not in the relation list. Out-of-Scope.")
     rel_group.add_argument("--entity_class", default="character", help="The class associated to the entities.")
+    rel_group.add_argument("--symmetric_relations",action="store_true",help="Predict relations taking as relation head both entities in each target relation.")
 
     rel_group.set_defaults(oos_relations=False)
+    rel_group.set_defaults(symmetric_relations=False)
+
 
     # Extraction sensitivity params
     extraction_group = parser.add_argument_group("Extraction options")
@@ -59,6 +63,12 @@ class QA_For_Eval(object):
     def answers_for_context(self, context_df : pd.DataFrame):
         context, *_ = context_df.context.unique()
         entities = context_df.left_entity.unique()
+        
+        # Check symmetric relations
+        if self.config.symmetric_relations:
+            entities_right = context_df.right_entity.unique()
+            entities = frozenset(entities) | frozenset(entities_right)
+            entities = list(entities)
 
         entity_df = pd.DataFrame(dict(instance_of=self.entity_class,entity_label=entities))
         verb = generate_verbalizations(entity_df,self.relation_df)

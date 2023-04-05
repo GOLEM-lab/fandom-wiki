@@ -6,6 +6,50 @@ from argparse import ArgumentParser
 
 import sys
 
+def f1(pre,rec):
+    f1 = pre + rec
+    if f1 != 0:
+        f1 = 2*pre*rec/f1
+    return f1
+
+def compute_scores(pred_df : pd.DataFrame, gold_df : pd.DataFrame):
+    merged_df = pd.merge(pred_df,gold_df)
+    relations = set(pred_df.relation.values) & set(gold_df.relation.values)
+    relations = list(relations)
+
+    # Compute micro
+    precision, recall = [], []
+    for rel in relations:
+        pre = (merged_df.relation == rel).sum() / (pred_df.relation == rel).sum()
+        rec = (merged_df.relation == rel).sum() / (gold_df.relation == rel).sum()
+
+        precision.append(pre)
+        recall.append(rec)
+
+    data = dict(relations=relations,precision=precision,recall=recall)
+    score_df = pd.DataFrame(data)
+
+    # Compute f1
+    score_df["f1"] = score_df[["precision","recall"]].apply(lambda x: f1(x.precision,x.recall),axis=1)
+
+    new_rows = []
+    # Make micro-average
+    micro_avg = score_df[["precision","recall","f1"]].mean()
+    micro_avg = dict(zip(score_df.columns,("micro_average",*micro_avg.values)))
+    new_rows.append(micro_avg)
+
+    # Add macro
+    pre = len(merged_df) / len(pred_df)
+    rec = len(merged_df) / len(gold_df)
+    macro_avg = dict(zip(score_df.columns,("macro_average",pre,rec,f1(pre,rec))))
+    new_rows.append(macro_avg)
+
+    new_df = pd.DataFrame(new_rows)
+
+    # Append rows
+    score_df = pd.concat((score_df,new_df),ignore_index=True)
+    return score_df
+
 def _build_parser():
     """TODO Docstring"""
     parser = ArgumentParser()
@@ -32,21 +76,9 @@ if __name__ == "__main__":
         gold_df_mask = gold_df.relation.apply(set(rel_df["rel_name"].values).__contains__)
         gold_df = gold_df[gold_df_mask]
 
-    merged = pd.merge(pred_df,gold_df)
+    scores_df = compute_scores(pred_df,gold_df)
 
-    precision = len(merged) / len(pred_df)
-    recall = len(merged) / len(gold_df)
-    f1 =    (2*precision*recall / (precision + recall) 
-                if (precision + recall) != 0 else 
-            (precision + recall))
-
-    # TODO add confusion matrix and micro-level scores
-
-    print(f"Precision: {precision}")
-    print(f"Recall: {recall}")
-    print()
-    print(f"F1: {f1}")
-
+    scores_df.to_csv(sys.stdout)
 
 
 

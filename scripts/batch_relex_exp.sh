@@ -8,7 +8,9 @@ FILE_BASENAME=${FILE_BASENAME//".json"/}
 mkdir -p results/${FILE_BASENAME}
 
 # Hparam
-relations_per_question=( 1 2 4 8 16 32 )
+relations_per_question=( 1 2 4 8 )
+#relations_per_question=( 1 2 4 8 16 32 )
+
 confidence_reduction=( "min_confidence" "max_confidence" "bayesian" )
 confidence_reduction_internal=( "max_confidence" "bayesian" )
 
@@ -18,7 +20,7 @@ for cri in ${confidence_reduction_internal[@]}; do
 
 echo "$rpq $cr $cri"
 
-python src/relation_extraction/relations_from_answers.py \
+python -m src.relation_extraction.relations_from_answers \
     --answers $INPUT_FILE \
     --relations_per_question $rpq \
     --confidence_reduction $cr \
@@ -27,6 +29,8 @@ python src/relation_extraction/relations_from_answers.py \
     --confidence_threshold 0.1 \
     > results/${FILE_BASENAME}/relex_fanfiction_harrypotter_rpq${rpq}_cr${cr}_cri${cri}.csv &
 
-done; done; done;
+done; 
+done; 
+done;
 
 wait
