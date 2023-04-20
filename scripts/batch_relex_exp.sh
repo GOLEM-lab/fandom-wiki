@@ -26,8 +26,8 @@ python -m src.relation_extraction.relations_from_answers \
     --confidence_reduction $cr \
     --confidence_reduction_internal $cri \
     --include_confidence \
-    --confidence_threshold 0.1 \
-    > results/${FILE_BASENAME}/relex_fanfiction_harrypotter_rpq${rpq}_cr${cr}_cri${cri}.csv &
+    --confidence_threshold 0.0 \
+    > results/${FILE_BASENAME}/rpq${rpq}_cr${cr}_cri${cri}.csv &
 
 done; 
 done; 

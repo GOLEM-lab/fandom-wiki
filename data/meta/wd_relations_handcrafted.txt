@@ -1,0 +1,408 @@
+*character:P1775:Thing
+Who does {character} follow?
+
+*character:P1780:Thing
+What is the school of {character}?
+On what school did {character} study?
+
+*character:P1787:Thing
+What is {character}'s art-name?
+
+*character:P1853:Thing
+What blood type does {character} have?
+What is the blood type of {character}?
+
+*character:P1884:Thing
+What color is {character}'s hair?
+
+*character:P2067:Thing
+How much does {character} weight?
+
+*character:P2389:Thing
+What organization is directed by {character}?
+What organization does {character} directe?
+
+*character:P2416:Thing
+What sports discipline did {character} compete in?
+What sport did {character} compete in?
+
+*character:P2650:Thing
+What is {character} interested in?
+
+*character:P3091:Thing
+Who is {character}'s mount?
+What is {character}'s mount?
+
+*character:P3205:Thing
+Who is {character} a patient of?
+Who is {character}'s doctor?
+
+*character:P3438:Thing
+What vehicle does {character} normally use?
+What vehicle does {character} use?
+
+*character:P5096:Thing
+What crew is {character} a member of?
+What is the crew of {character}?
+
+*character:P8839:Thing
+What hairstyle does {character} have?
+What is the hairstyle of {character}?
+
+*character:P8852:Thing
+{character} facial hair?
+
+*character:P19:Thing
+What is {character}'s place of birth?
+What is the place of birth of {character}?
+Where was {character} born?
+
+*character:P20:Thing
+Where did {character} die?
+
+*character:P21:Thing
+What is {character}'s gender?
+What gender is {character}?
+
+*character:P27:Thing
+What is the nationality of {character}?
+Where is {character} from?
+
+*character:P39:Thing
+What position did {character} have?
+
+*character:P53:Thing
+Who is {character}'s family?
+Who is part of {character}'s family?
+Who belongs to {character}'s family?
+
+
+*character:P54:Thing
+What sports team is {character} a member of?
+What is {character}'s sports team?
+
+*character:P69:Thing
+Where was {character} educated at?
+Where did {character} study?
+
+*character:P91:Thing
+What is {character}'s sexual orientation?
+
+*character:P97:Thing
+What is {character}'s noble title?
+What noble title does {character} have?
+
+
+*character:P102:Thing
+What political party is {character} a member of?
+What is the political party of {character}?
+
+*character:P103:Thing
+What language is {character}'s native language?
+What is {character}'s native language?
+
+
+*character:P106:Thing
+What is {character}'s occupation?
+What does {character} do for a living?
+What is {character}'s job?
+
+
+*character:P108:Thing
+Who is {character}'s employer?
+Who is {character}'s boss?
+Who employed {character}?
+
+
+*character:P136:Thing
+What is {character}'s genre?
+
+*character:P140:Thing
+What religion does {character} follow?
+What is the religion of {character}?
+
+
+*character:P172:Thing
+What ethnic group does {character} belong to?
+What is {character}'s skin color?
+
+
+*character:P410:Thing
+What is {character}'s military rank?
+What military rank does {character} have?
+
+
+*character:P413:Thing
+What is {character}'s speciality?
+What position does {character} play in?
+
+
+*character:P511:Thing
+What honorific prefix does {character} have?
+
+*character:P512:Thing
+What academic degree does {character} hold?
+What academic degree does {character} have?
+
+
+*character:P550:Thing
+What chivalric order is {character} part of?
+What chivalric order is {character} a member of?
+
+
+*character:P551:Thing
+Where does {character} live?
+Where is {character} located?
+
+
+*character:P552:Thing
+What is {character}'s handedness?
+What hand does {character} use?
+
+
+*character:P569:Thing
+What is {character}'s date of birth?
+When was {character} born?
+On what date was {character} born?
+
+*character:P570:Thing
+What is {character}'s date of death?
+When did {character} die?
+On what date was {character}'s death?
+
+*character:P607:Thing
+What is {character}'s conflict?
+What conflict is {character} involved in?
+
+
+*character:P641:Thing
+What sport does {character} do?
+What sport does {character} practice?
+
+
+*character:P734:Thing
+What is {character}'s family name?
+What family name does {character} have?
+
+
+*character:P735:Thing
+What is  {character}'s given name?
+What given name does {character} have?
+
+
+*character:P742:Thing
+What is {character}'s pseudonym?
+What is {character}'s nickname?
+What nickname does {character} have?
+What pseudonym does {character} have?
+
+
+*character:P800:Thing
+What is some notable work done by {character}?
+
+*character:P802:Thing
+Who is {character}'s student?
+
+*character:P803:Thing
+What is {character}'s professorship?
+
+*character:P937:Thing
+What is {character}'s work location?
+Where does {character} work?
+
+*character:P1035:Thing
+What honorific suffix does {character} have?
+
+*character:P1049:Thing
+Who worships {character}?
+Who is worshipped by {character}?
+
+*character:P1050:Thing
+What is {character}'s medical condition?
+What medical condition does {character} suffer from?
+
+
+*character:P1066:Thing
+Whose student is {character}?
+Who is {character}'s proffesor?
+Who taught {character}?
+
+
+*character:P1196:Thing
+How did {character} die?
+
+*character:P1303:Thing
+What instrument does {character} play?
+
+*character:P1308:Thing
+What office title does {character} hold?
+
+*character:P1327:Thing
+Who is {character}'s partner in business?
+Who is {character}'s partner in a sport?
+Who is {character}'s partner?
+Who is a partner in business of {character}?
+Who is a partner in a sport of {character}?
+Who is a partner of {character}?
+
+
+*character:P1340:Thing
+What is the color of {character}'s eyes?
+Of what color are {character}'s eyes?
+What eye color does {character} have?
+What is {character}'s eye color?
+
+
+*character:P1344:Thing
+What does {character} participate in?
+
+*character:P1412:Thing
+What language does {character} speak?
+
+*character:P1429:Thing
+Who is {character}'s pet?
+What pet does {character} have?
+
+*character:P1449:Thing
+What is {character}'s pseudonym?
+What is {character}'s nickname?
+What nickname does {character} have?
+What pseudonym does {character} have?
+
+*character:P1477:Thing
+What is {character}'s birth name?
+
+
+*character:P1543:Thing
+What is {character}'s monogram?
+What monogram does {character} have?
+
+
+*character:P1559:Thing
+What is {character}'s name in the native language?
+What name does {character} have in the native language?
+
+*character:P1576:Thing
+What is {character}'s lifestyle?
+What lifestyle does {character} have?
+What lifestyle does {character} follow?
+
+
+*character:P22:Thing
+Who is {character}'s father?
+Who is the father of {character}?
+
+
+*character:P25:Thing
+Who is {character}'s mother?
+Who is the mother of {character}?
+
+*character:P26:Thing
+Who is {character}'s spouse?
+
+*character:P40:Thing
+Who is {character}'s child?
+Who is {character}'s son?
+Who is {character}'s daughter?
+Who is the child of {character}?
+Who is the son of {character}?
+Who is the daughter of {character}?
+
+*character:P451:Thing
+Who is {character}'s boyfriend?
+Who is {character}'s girlfriend?
+Who is {character}'s lover?
+
+
+*character:P1038:Thing
+Who is {character}'s relative?
+What relative does {character} have?
+
+*character:P1290:Thing
+Who is {character}'s godparent?
+Who is the godparent of {character}?
+
+
+*character:P1971:Thing
+How many children does {character} have?
+What number of children does {character} have?
+
+
+*character:P3373:Thing
+Who is {character}'s sibling?
+Who is the sibling of {character}?
+
+
+*character:P3448:Thing
+Who is {character}'s stepparent?
+What stepparent does {character} have?
+
+
+*character:P8810:Thing
+Who is {character}'s parent?
+Who is te parent of {character}?
+
+
+*character:P101:Thing
+What is {character}'s field of work?
+What does {character} work in?
+What kind of work does {character} do?
+
+
+
+*character:P463:Thing
+What is {character} member of?
+Of what organization is {character} a member of?
+{character} is the member of what organization?
+
+
+*character:P1142:Thing
+What is the political ideology of {character}?
+What political ideology does {character} have?
+What is {character}'s political ideology?
+
+*character:P1387:Thing
+What is the political alignment of {character}?
+What political alignment does {character} have?
+What is {character}'s political alignment?
+
+*character:P1399:Thing
+What is {character} convicted of?
+
+*character:P1416:Thing
+What is {character}'s affiliation?
+What is {character} affiliatiated to?
+
+*character:P127:Thing
+Who is {character} owned by?
+Who is {character}'s owner?
+Who owns {character}?
+What does {character} own?
+What is {character} an owner of?
+
+
+*character:P170:Thing
+What did {character} create?
+
+*character:P748:Thing
+Who is {character} appointed by?
+Who appoints {character}?
+
+
+*character:P1029:Thing
+Who is a member of {character}'s crew?
+Who belongs to {character}'s crew?
+
+
+*character:P1039:Thing
+Who is family related to {character}?
+
+*character:P2842:Thing
+Where is {character}'s place of marriage?
+Where did {character} get married?
+
+*character:P6886:Thing
+What language has {character} written in?
+What is the language {character} writes in?
+
+
