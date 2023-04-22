@@ -22,7 +22,9 @@ for f in "${INPUT_DIR}/"*".csv"; do
 
     cat $f | python -c "import pandas as pd; import sys; df = pd.read_csv(sys.stdin,header=0); df[df.confidence >= $CONF_LIM].to_csv(sys.stdout,index=False)" > $PIPE &
 
-    cat data/enwiki-20160501/validation.csv | 
+    #cat data/enwiki-20160501/validation.csv | 
+    cat data/annotation/harry_potter_annotations.csv | 
+    
     python -m src.utils.compute_eval_score \
         --predictions $PIPE \
         --gold /dev/stdin \
