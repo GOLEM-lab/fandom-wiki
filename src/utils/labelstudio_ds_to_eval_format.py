@@ -35,29 +35,30 @@ def context_from_documents(annot : list) -> typing.List[str]:
     
     return context
 
-def _triples_from_annotation(annot):
-    relations = filter(lambda x: x["type"] == "relation",annot)
-    triples = [(r["from_id"],r["labels"][0],r["to_id"]) for r in relations if r["labels"]]
-
-    return triples
 
 def relations_from_annotation(annot : list) -> typing.List[tuple]:
-    
     labels = filter(lambda x: x["type"] == "labels",annot)
-    labels = {label["id"] : label["value"]["text"] for label in labels}
+    labels = {label["id"] : label["value"] for label in labels}
     
-    triples = _triples_from_annotation(annot)
+    relations = filter(lambda x: x["type"] == "relation",annot)
+    triples = [(r["from_id"],r["labels"][0].split(" ")[0],r["to_id"]) for r in relations if r["labels"]]
 
     # Change ids for text
     left, rel, right = zip(*triples) 
+    
     left = map(labels.__getitem__,left)
-    rel = (r.split(" ")[0] for r in rel)
+    left = ((l["text"],l["labels"][0].split(" ")[0]) for l in left)
+    left = zip(*left)    
+    
     right = map(labels.__getitem__,right)
+    right = ((r["text"],r["labels"][0].split(" ")[0]) for r in right)
+    right = zip(*right)
 
-    triples = zip(left, rel, right)
+    triples = zip(*left, rel,*right)
     triples = list(triples)
 
     return triples
+
 
 def relations_from_annotations(annot : list, context : list) -> pd.DataFrame:
     relations_per_annotation = map(relations_from_annotation,annot)
@@ -66,7 +67,33 @@ def relations_from_annotations(annot : list, context : list) -> pd.DataFrame:
                                 for r in relations]
 
     rel_df = pd.DataFrame(relation_and_context,
-                columns=["left_entity","relation","right_entity","context"])
+                columns=["left_entity","left_class","relation","right_entity","right_class","context"])
+    return rel_df
+
+def relation_spec_from_annotation(annot : list) -> pd.DataFrame:
+    labels = filter(lambda x: x["type"] == "labels",annot)
+    labels = {label["id"] : label["value"]["labels"] for label in labels}
+    
+    relations = filter(lambda x: x["type"] == "relation",annot)
+    triples = [(r["from_id"],*r["labels"][0].split(" ",maxsplit=1),r["to_id"]) for r in relations if r["labels"]]
+
+    new_triples = []
+    for left, *rel, right in triples:
+        left, right = labels[left], labels[right]
+
+        product = ((*rel,l.split(" ")[0],r.split(" ")[0]) for l,r in itools.product(left,right))
+        new_triples.extend(product)
+
+    return new_triples
+
+
+def relation_spec_from_annotations(annot : list) -> pd.DataFrame:
+    triples = map(relation_spec_from_annotation,annot)
+    triples = itools.chain(*triples)
+    triples = set(triples)
+
+    rel_df = pd.DataFrame(triples,
+                columns=["prop","propLabel","left_class","right_class"])
     return rel_df
 
 def _build_parser():
@@ -90,14 +117,7 @@ if __name__ == "__main__":
         relations = relations_from_annotations(extracted_annotations,extracted_context)
 
     else:
-        triples = map(_triples_from_annotation,extracted_annotations)
-        triples = itools.chain(*triples)
-        
-        _, rel, _ = zip(*triples)
-        rel = set(rel)
-        rel = map(op.methodcaller("split"," ",maxsplit=1),rel)
-
-        relations = pd.DataFrame(rel,columns=["prop","propLabel"])    
+        relations = relation_spec_from_annotations(extracted_annotations)
     
     relations.to_csv(sys.stdout,index=False)
 
