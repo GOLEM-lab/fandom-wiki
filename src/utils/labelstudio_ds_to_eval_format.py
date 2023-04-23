@@ -41,7 +41,11 @@ def relations_from_annotation(annot : list) -> typing.List[tuple]:
     labels = {label["id"] : label["value"] for label in labels}
     
     relations = filter(lambda x: x["type"] == "relation",annot)
-    triples = [(r["from_id"],r["labels"][0].split(" ")[0],r["to_id"]) for r in relations if r["labels"]]
+    triples = [( 
+            (r["from_id"],r["labels"][0].split(" ")[0],r["to_id"]) 
+            if r["direction"] == "right" else
+            (r["to_id"],r["labels"][0].split(" ")[0],r["from_id"])
+        ) for r in relations if r["labels"]]
 
     # Change ids for text
     left, rel, right = zip(*triples) 
@@ -75,7 +79,11 @@ def relation_spec_from_annotation(annot : list) -> pd.DataFrame:
     labels = {label["id"] : label["value"]["labels"] for label in labels}
     
     relations = filter(lambda x: x["type"] == "relation",annot)
-    triples = [(r["from_id"],*r["labels"][0].split(" ",maxsplit=1),r["to_id"]) for r in relations if r["labels"]]
+    triples = [( 
+            (r["from_id"],*r["labels"][0].split(" ",maxsplit=1),r["to_id"]) 
+            if r["direction"] == "right" else
+            (r["to_id"],*r["labels"][0].split(" ",maxsplit=1),r["from_id"])
+        ) for r in relations if r["labels"]]
 
     new_triples = []
     for left, *rel, right in triples:

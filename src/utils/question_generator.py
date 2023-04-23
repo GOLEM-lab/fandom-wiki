@@ -7,7 +7,7 @@ import operator as op
 import sys
 
 def questions_from_relation_label(relation_label,subject_class,heuristics=False):
-    subject = "{"+f"{subject_class}"+"}"
+    subject = "{"+ subject_class +"}"
 
     if heuristics:
         rl_tokens = relation_label.split(" ")
@@ -47,13 +47,14 @@ def _build_parser():
     """TODO Docstring"""
     parser = ArgumentParser()
 
-    parser.add_argument("--subject_class",required=True,help="The class of the entities that can be subject of the relation.")
+    parser.add_argument("--infer_classes",action="store_true",help="Whether to use information in the relation data to infer the classes of subject and object")
+    parser.add_argument("--subject_class",default="Thing",help="The class of the entities that can be subject of the relation.")
     parser.add_argument("--object_class",default="Thing",help="The class of the entities that can be object of the relation. By default: \"Thing\".")
 
     parser.add_argument("--question_heuristics",action="store_true",help="Use heuristics to determine plausible aspects of the question that corresponds to the relation.")
     parser.add_argument("--relation_label_spec",action="store_true",help="Use the label of the relation instead of the ID to define the relation spec.")
     
-
+    parser.set_defaults(infer_classes=False)
     parser.set_defaults(question_heuristics=False)
     parser.set_defaults(relation_label_spec=False)
 
@@ -67,19 +68,22 @@ if __name__ == "__main__":
     # Read relations
     rel_df = pd.read_csv(sys.stdin, header=0)
 
+    if not args.infer_classes:
+        rel_df["left_class"] = args.subject_class
+        rel_df["right_class"] = args.object_class
+
+
     # Get questions
     questions_from_relation_label = ftools.partial(questions_from_relation_label,
-                                        subject_class=args.subject_class,
                                         heuristics=args.question_heuristics)
-    questions = rel_df["propLabel"].apply(questions_from_relation_label)
+    questions = rel_df[["propLabel","left_class"]].apply(lambda x: questions_from_relation_label(*x),axis=1)#questions_from_relation_label(*x))
 
-    if args.relation_label_spec:
-        lq = pd.concat((rel_df["propLabel"],questions),axis=1)
-    else:
-        lq = pd.concat((rel_df["prop"],questions),axis=1)
+    rel_column = "propLabel" if args.relation_label_spec else "prop"
+    lq = pd.concat((rel_df[["left_class",rel_column,"right_class"]],questions),axis=1)
+    
 
-    for _,(r,qs) in lq.iterrows():
-        print(f"*{args.subject_class}:{r}:{args.object_class}")
+    for _,(lc,rel,rc,qs) in lq.iterrows():
+        print(f"*{lc}:{rel}:{rc}")
         for q in qs:
             print(q)
 

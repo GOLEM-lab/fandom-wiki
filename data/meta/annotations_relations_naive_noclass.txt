@@ -1,0 +1,204 @@
+*Q5:P2546:Q5
+{Q5} sidekick of?
+
+*Q1190554:P533:Q43229
+{Q1190554} target of?
+
+*Q1190554:P828:Q180684
+{Q1190554} has cause?
+
+*Q5:P1344:Q180684
+{Q5} participant in?
+
+*Q180684:P533:Q1274979
+{Q180684} target of?
+
+*Q5:P7047:Q1274979
+{Q5} enemy?
+
+*Q1190554:P1534:Q5
+{Q1190554} end cause?
+
+*Q5:P27:Q105673273
+{Q5} citizenship?
+
+*Q5:P551:Q115095765
+{Q5} residence?
+
+*Q180684:P1534:Q1190554
+{Q180684} end cause?
+
+*Q5:P3373:Q5
+{Q5} sibling?
+
+*Q1190554:P533:Q223557
+{Q1190554} target of?
+
+*Q5:P569:Q205892
+{Q5} date of birth?
+
+*Q5:P413:Q1781513
+{Q5} position played on team / speciality?
+
+*Q5:P54:Q12973014
+{Q5} member of sports team?
+
+*Q5:P39:Q28640
+{Q5} position held?
+
+*Q5:P1449:Q82799
+{Q5} nickname?
+
+*Q5:P157:Q5
+{Q5} killed by?
+
+*Q5:P533:Q1190554
+{Q5} target of?
+
+*Q1274979:P1344:Q1190554
+{Q1274979} participant in?
+
+*Q5:P2283:Q223557
+{Q5} uses?
+
+*Q5:P1290:Q5
+{Q5} godparent?
+
+*Q5:P172:Q105673273
+{Q5} ethnic group?
+
+*Q5:P3342:Q5
+{Q5} significant person?
+
+*Q1274979:P127:Q5
+{Q1274979} owned by?
+
+*Q43229:P2389:Q28640
+{Q43229} organization directed by the office or position?
+
+*Q180684:P828:Q180684
+{Q180684} has cause?
+
+*Q43229:P170:Q5
+{Q43229} creator?
+
+*Q5:P7047:Q43229
+{Q5} enemy?
+
+*Q5:P69:Q43229
+{Q5} educated at?
+
+*Q5:P533:Q180684
+{Q5} target of?
+
+*Q5:P3629:Q185836
+{Q5} age of subject at event?
+
+*Q1190554:P585:Q205892
+{Q1190554} point in time?
+
+*Q5:P26:Q5
+{Q5} spouse?
+
+*Q5:P27:Q231002
+{Q5} citizenship?
+
+*Q43229:P1344:Q1190554
+{Q43229} participant in?
+
+*Q105673273:P361:Q223557
+{Q105673273} part of?
+
+*Q223557:P127:Q5
+{Q223557} owned by?
+
+*Q5:P361:Q105673273
+{Q5} part of?
+
+*Q5:P106:Q43229
+{Q5} occupation?
+
+*Q5:P69:Q115095765
+{Q5} educated at?
+
+*Q5:P8810:Q5
+{Q5} parent?
+
+*Q5:P22:Q5
+{Q5} father?
+
+*Q5:P25:Q5
+{Q5} mother?
+
+*Q43229:P828:Q1190554
+{Q43229} has cause?
+
+*Q5:P1429:Q39201
+{Q5} has pet?
+
+*Q1190554:P276:Q115095765
+{Q1190554} location?
+
+*Q1190554:P1534:Q223557
+{Q1190554} end cause?
+
+*Q5:P276:Q115095765
+{Q5} location?
+
+*Q5:P40:Q5
+{Q5} child?
+
+*Q5:P2650:Q26256810
+{Q5} interested in?
+
+*Q5:P1346:Q500834
+{Q5} winner?
+
+*Q5:P1971:Q105673273
+{Q5} number of children?
+
+*Q1274979:P533:Q1190554
+{Q1274979} target of?
+
+*Q1190554:P828:Q1190554
+{Q1190554} has cause?
+
+*Q5:P463:Q43229
+{Q5} member of?
+
+*Q5:P1534:Q223557
+{Q5} end cause?
+
+*Q180684:P276:Q115095765
+{Q180684} location?
+
+*Q5:P106:Q28640
+{Q5} occupation?
+
+*Q5:P1344:Q1190554
+{Q5} participant in?
+
+*Q5:P2283:Q1274979
+{Q5} uses?
+
+*Q5:P569:Q1190554
+{Q5} date of birth?
+
+*Q5:P1344:Q26256810
+{Q5} participant in?
+
+*Q5:P9652:Q105673273
+{Q5} personality trait?
+
+*Q5:P7047:Q5
+{Q5} enemy?
+
+*Q1190554:P1534:Q180684
+{Q1190554} end cause?
+
+*Q105673273:P361:Q5
+{Q105673273} part of?
+
+*Q1190554:P276:Q43229
+{Q1190554} location?
+

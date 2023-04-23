@@ -7,6 +7,7 @@ import transformers
 
 from argparse import ArgumentParser
 from typing import Callable
+import itertools as itools
 from tqdm import tqdm
 
 import json
@@ -22,10 +23,12 @@ def _build_parser():
     rel_group = parser.add_argument_group("Relation options")
     rel_group.add_argument("--relations",required=True,help="Filepath of file with a list of relations: a relation spec \"*<class_left>:<relation_name>:<class_right>\" followed by one or more verbalizations.")
     rel_group.add_argument("--OoS_relations",dest="oos_relations",action="store_true",help="Predict relations for instances whose target relations are not in the relation list. Out-of-Scope.")
-    rel_group.add_argument("--entity_class", default="character", help="The class associated to the entities.")
+    rel_group.add_argument("--infer_entity_class", action="store_true", help="Use entity type annotations to decide the class of each entity.")
+    rel_group.add_argument("--entity_class", default="Thing", help="The class associated to the entities. Ignored when using \"infer_entity_class\"")
     rel_group.add_argument("--symmetric_relations",action="store_true",help="Predict relations taking as relation head both entities in each target relation.")
 
     rel_group.set_defaults(oos_relations=False)
+    rel_group.set_defaults(infer_entity_class=False)
     rel_group.set_defaults(symmetric_relations=False)
 
 
@@ -51,8 +54,8 @@ def _build_parser():
 class QA_For_Eval(object):
     def __init__(self,
                 relation_df : pd.DataFrame,
-                entity_class : str,
                 qa_module : Callable,
+                entity_class : str = None,
                 config : dict = dict()):
         
         self.relation_df = relation_df
@@ -62,15 +65,32 @@ class QA_For_Eval(object):
 
     def answers_for_context(self, context_df : pd.DataFrame):
         context, *_ = context_df.context.unique()
-        entities = context_df.left_entity.unique()
         
-        # Check symmetric relations
-        if self.config.symmetric_relations:
-            entities_right = context_df.right_entity.unique()
-            entities = frozenset(entities) | frozenset(entities_right)
-            entities = list(entities)
+        if self.entity_class is not None:
+            entities = context_df.left_entity.unique()
+            # Check symmetric relations
+            if self.config.symmetric_relations:
+                entities_right = context_df.right_entity.unique()
+                entities = frozenset(entities) | frozenset(entities_right)
+                entities = list(entities)
+           
+            entity_classes = self.entity_class
 
-        entity_df = pd.DataFrame(dict(instance_of=self.entity_class,entity_label=entities))
+        else:
+            entities = context_df.left_entity, context_df.left_class
+            entities = zip(*entities)
+
+            if self.config.symmetric_relations:
+                right_entities = context_df.right_entity, context_df.right_class
+                right_entities = zip(*right_entities)
+
+                entities = itools.chain(entities,right_entities)
+
+            entities = set(entities)
+            entities, entity_classes = zip(*entities)
+
+            
+        entity_df = pd.DataFrame(dict(instance_of=entity_classes,entity_label=entities))
         verb = generate_verbalizations(entity_df,self.relation_df)
 
         answer_df = qa.generate_answers(context,verb,self.qa_module,config=self.config)
@@ -92,7 +112,8 @@ if __name__ == "__main__":
 
     # Init QA system
     qa_module = qa.init_pipeline_system(args)
-    qa4eval = QA_For_Eval(rel_df,args.entity_class,qa_module,args)
+    entity_class = None if args.infer_entity_class else args.entity_class
+    qa4eval = QA_For_Eval(rel_df,qa_module,entity_class,args)
 
 
     if not args.oos_relations:

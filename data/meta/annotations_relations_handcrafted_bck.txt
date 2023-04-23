@@ -1,0 +1,272 @@
+*Q5:P463:Q43229
+What organization is {Q5} a member of?
+{Q5} is a member of what organization?
+
+*Q5:P7047:Q1274979
+What creature is {Q5}'s enemy?
+What enemy does {Q5} have?
+Who is {Q5}'s enemy?
+Who is an enemy of {Q5}?
+
+*Q5:P40:Q5
+Who is {Q5}'s child?
+Who is a child of {Q5}?
+
+*Q5:P8810:Q5
+Who is {Q5}'s parent?
+Who is a parent of {Q5}?
+
+*Q43229:P170:Q5
+Who is {Q43229}'s creator?
+Who is the creator of {Q43229}?
+Who created {Q43229}?
+What person is {Q43229}'s creator?
+What person is the creator of {Q43229}?
+What person created {Q43229}?
+
+*Q43229:P828:Q1190554
+What is the cause of {Q43229}?
+What event caused {Q43229}?
+What is the event that caused {Q43229}?
+
+*Q180684:P1534:Q1190554
+What event caused {Q180684} to end?
+What occurrence caused {Q180684} to end?
+In what event did {Q180684} culminate?
+What event brought {Q180684} to an end?
+What occurrence brought {Q180684} to an end?
+
+
+*Q5:P106:Q28640
+What is {Q5}'s occupation?
+What does {Q5} do for a living?
+What is {Q5}'s job?
+
+*Q5:P2283:Q1274979
+What creature does {Q5} use?
+What being does {Q5} use?
+Who does {Q5} use?
+
+*Q43229:P2389:Q28640
+Who directs {Q43229}?
+Who is in charge of {Q43229}?
+
+*Q180684:P533:Q1274979
+Who does {Q180684} affect?
+Who is {Q180684} about?
+What creature does {Q180684} affect?
+What creature is {Q180684} about?
+
+*Q5:P1346:Q500834
+What tournament did {Q5} win?
+What competition did {Q5} win?
+
+
+*Q5:P26:Q5
+Who is the spouse of {Q5}?
+Who is {Q5}'s spouse?
+
+*Q43229:P1344:Q1190554
+In what event did {Q43229} participated?
+In what event did {Q43229} partake?
+In what occurrence did {Q43229} participated?
+In what occurrence did {Q43229} partake?
+
+
+*Q1190554:P533:Q223557
+What object does {Q1190554} affect?
+What object is {Q1190554} about?
+What object is the Q1190554 of {Q180684}?
+
+
+*Q5:P569:Q1190554
+What was going on when {Q5} was born?
+What was happening when {Q5} was born?
+During what event was {Q5} born?
+During what occurrence was {Q5} born?
+
+
+*Q105673273:P172:Q5
+Who is {Q105673273}?
+Who belongs to the {Q105673273} ethnic group?
+
+*Q1190554:P276:Q43229
+Where did {Q1190554} happen?
+Where did {Q1190554} take place?
+In what location did {Q1190554} take place?
+In what location did {Q1190554} happen?
+
+
+*Q1190554:P1534:Q223557
+What object caused {Q180684} to end?
+What object brought {Q180684} to an end?
+What is the thing that caused {Q180684} to end?
+What is the thing that brought {Q180684} to an end?
+
+*Q5:P569:Q205892
+What is {Q5}'s date of birth?
+When was {Q5} born?
+On what date was {Q5} born?
+
+*Q5:P2650:Q26256810
+What topic is {Q5} interested in?
+What matter is {Q5} interested in?
+What topic does {Q5} have interest in?
+What matter does {Q5} have interest in?
+
+*Q5:P361:Q105673273
+{Q5} part of?
+
+*Q5:P27:Q231002
+{Q5} citizenship?
+
+*Q5:P106:Q43229
+{Q5} occupation?
+
+*Q5:P127:Q1274979
+{Q5} owned by?
+
+*Q180684:P828:Q180684
+{Q180684} has cause?
+
+*Q5:P551:Q115095765
+{Q5} residence?
+
+*Q5:P3373:Q5
+{Q5} sibling?
+
+*Q5:P7047:Q5
+{Q5} enemy?
+
+*Q5:P1429:Q39201
+{Q5} has pet?
+
+*Q5:P69:Q115095765
+{Q5} educated at?
+
+*Q5:P413:Q1781513
+{Q5} position played on team / speciality?
+
+*Q5:P1449:Q82799
+{Q5} nickname?
+
+*Q180684:P533:Q5
+{Q180684} target of?
+
+*Q180684:P276:Q115095765
+{Q180684} location?
+
+*Q180684:P828:Q1190554
+{Q180684} has cause?
+
+*Q5:P2546:Q5
+{Q5} sidekick of?
+
+*Q105673273:P361:Q5
+{Q105673273} part of?
+
+*Q5:P3342:Q5
+{Q5} significant person?
+
+*Q5:P533:Q180684
+{Q5} target of?
+
+*Q1190554:P1534:Q180684
+{Q1190554} end cause?
+
+*Q5:P1971:Q105673273
+{Q5} number of children?
+
+*Q5:P1344:Q26256810
+{Q5} participant in?
+
+*Q5:P533:Q1190554
+{Q5} target of?
+
+*Q43229:P7047:Q5
+{Q43229} enemy?
+
+*Q5:P54:Q12973014
+{Q5} member of sports team?
+
+*Q1190554:P1534:Q5
+{Q1190554} end cause?
+
+*Q1274979:P533:Q1190554
+{Q1274979} target of?
+
+*Q5:P69:Q43229
+{Q5} educated at?
+
+*Q180684:P1344:Q5
+{Q180684} participant in?
+
+*Q5:P276:Q115095765
+{Q5} location?
+
+*Q5:P2283:Q223557
+{Q5} uses?
+
+*Q223557:P127:Q5
+{Q223557} owned by?
+
+*Q105673273:P9652:Q5
+{Q105673273} personality trait?
+
+*Q105673273:P361:Q223557
+{Q105673273} part of?
+
+*Q105673273:P27:Q5
+{Q105673273} citizenship?
+
+*Q1190554:P828:Q180684
+{Q1190554} has cause?
+
+*Q5:P1290:Q5
+{Q5} godparent?
+
+*Q1190554:P533:Q43229
+{Q1190554} target of?
+
+*Q5:P1344:Q180684
+{Q5} participant in?
+
+*Q5:P25:Q5
+{Q5} mother?
+
+*Q5:P1534:Q223557
+{Q5} end cause?
+
+*Q5:P157:Q5
+{Q5} killed by?
+
+*Q5:P3629:Q185836
+{Q5} age of subject at event?
+
+*Q1190554:P585:Q205892
+{Q1190554} point in time?
+
+*Q1190554:P276:Q115095765
+{Q1190554} location?
+
+*Q1274979:P1344:Q1190554
+{Q1274979} participant in?
+
+*Q1190554:P828:Q1190554
+{Q1190554} has cause?
+
+*Q1190554:P533:Q5
+{Q1190554} target of?
+
+*Q5:P127:Q223557
+{Q5} owned by?
+
+*Q5:P22:Q5
+{Q5} father?
+
+*Q5:P1344:Q1190554
+{Q5} participant in?
+
+*Q5:P39:Q28640
+{Q5} position held?
+

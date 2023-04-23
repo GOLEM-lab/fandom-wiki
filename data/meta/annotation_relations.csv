@@ -1,40 +1,69 @@
-prop,propLabel
-P1971,number of children
-P172,ethnic group
-P170,creator
-P2389,organization directed by the office or position
-P2546,sidekick of
-P127,owned by
-P276,location
-P361,part of
-P585,point in time
-P1346,winner
-P8810,parent
-P3629,age of subject at event
-P3373,sibling
-P25,mother
-P40,child
-P413,position played on team / speciality
-P22,father
-P106,occupation
-P1449,nickname
-P54,member of sports team
-P3342,significant person
-P1429,has pet
-P27,citizenship
-P463,member of
-P1290,godparent
-P569,date of birth
-P828,has cause
-P551,residence
-P533,target of
-P26,spouse
-P1534,end cause
-P7047,enemy
-P2650,interested in
-P39,position held
-P157,killed by
-P69,educated at
-P9652,personality trait
-P2283,uses
-P1344,participant in
+prop,propLabel,left_class,right_class
+P2546,sidekick of,Q5,Q5
+P533,target of,Q1190554,Q43229
+P828,has cause,Q1190554,Q180684
+P1344,participant in,Q5,Q180684
+P533,target of,Q180684,Q1274979
+P7047,enemy,Q5,Q1274979
+P1534,end cause,Q1190554,Q5
+P27,citizenship,Q5,Q105673273
+P551,residence,Q5,Q115095765
+P1534,end cause,Q180684,Q1190554
+P3373,sibling,Q5,Q5
+P533,target of,Q1190554,Q223557
+P569,date of birth,Q5,Q205892
+P413,position played on team / speciality,Q5,Q1781513
+P54,member of sports team,Q5,Q12973014
+P39,position held,Q5,Q28640
+P1449,nickname,Q5,Q82799
+P157,killed by,Q5,Q5
+P533,target of,Q5,Q1190554
+P1344,participant in,Q1274979,Q1190554
+P2283,uses,Q5,Q223557
+P1290,godparent,Q5,Q5
+P172,ethnic group,Q5,Q105673273
+P3342,significant person,Q5,Q5
+P127,owned by,Q1274979,Q5
+P2389,organization directed by the office or position,Q43229,Q28640
+P828,has cause,Q180684,Q180684
+P170,creator,Q43229,Q5
+P7047,enemy,Q5,Q43229
+P69,educated at,Q5,Q43229
+P533,target of,Q5,Q180684
+P3629,age of subject at event,Q5,Q185836
+P585,point in time,Q1190554,Q205892
+P26,spouse,Q5,Q5
+P27,citizenship,Q5,Q231002
+P1344,participant in,Q43229,Q1190554
+P361,part of,Q105673273,Q223557
+P127,owned by,Q223557,Q5
+P361,part of,Q5,Q105673273
+P106,occupation,Q5,Q43229
+P69,educated at,Q5,Q115095765
+P8810,parent,Q5,Q5
+P22,father,Q5,Q5
+P25,mother,Q5,Q5
+P828,has cause,Q43229,Q1190554
+P1429,has pet,Q5,Q39201
+P276,location,Q1190554,Q115095765
+P1534,end cause,Q1190554,Q223557
+P276,location,Q5,Q115095765
+P40,child,Q5,Q5
+P2650,interested in,Q5,Q26256810
+P1346,winner,Q5,Q500834
+P1971,number of children,Q5,Q105673273
+P533,target of,Q1274979,Q1190554
+P828,has cause,Q1190554,Q1190554
+P463,member of,Q5,Q43229
+P1534,end cause,Q5,Q223557
+P276,location,Q180684,Q115095765
+P106,occupation,Q5,Q28640
+P1344,participant in,Q5,Q1190554
+P2283,uses,Q5,Q1274979
+P569,date of birth,Q5,Q1190554
+P1344,participant in,Q5,Q26256810
+P9652,personality trait,Q5,Q105673273
+P7047,enemy,Q5,Q5
+P1534,end cause,Q1190554,Q180684
+P361,part of,Q105673273,Q5
+P276,location,Q1190554,Q43229
