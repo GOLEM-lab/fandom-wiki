@@ -2,11 +2,11 @@
 Who is the sidekick of {Q5}?
 Who is {Q5}'s sidekick?
 Who is {Q5}'s companion?
-Who is {Q5}'s partner?
+Who is {Q5}'s partner? # ambiguous: can also return romantic relationship
 What person is the sidekick of {Q5}?
 What person is {Q5}'s sidekick?
 What person is {Q5}'s companion?
-What person is {Q5}'s partner?
+What person is {Q5}'s partner? # ambiguous: can also return romantic relationship
 
 *Q1190554:P533:Q43229
 What organization does {Q1190554} affect?
@@ -25,11 +25,11 @@ In what conflict did {Q5} partake?
 
 *Q180684:P533:Q1274979
 What creature does {Q180684} affect?
-What creature is {Q180684} about?
+What creature is {Q180684} about? # maybe too vague for this specific P, can also return the person with an active role
 What creature is the focus of {Q180684}?
 What creature is the target of {Q180684}?
 Who does {Q180684} affect?
-Who is {Q180684} about?
+Who is {Q180684} about? # too vague?
 Who is the focus of {Q180684}?
 Who is the target of {Q180684}?
 
@@ -66,7 +66,7 @@ In what location does {Q5} live?
 *Q180684:P1534:Q1190554
 What event caused {Q180684} to end?
 What occurrence caused {Q180684} to end?
-In what event did {Q180684} culminate?
+In what event did {Q180684} culminate? # this is wrong because it asks about the outcome, not the cause of the event's ending
 What event brought {Q180684} to an end?
 What occurrence brought {Q180684} to an end?
 
@@ -85,8 +85,8 @@ When was {Q5} born?
 On what date was {Q5} born?
 
 *Q5:P413:Q1781513
-What is {Q5}'s speciality position?
-What position does {Q5} play in?
+What is {Q5}'s speciality position? # add: in a sport
+What position does {Q5} play in? # add at beginning: In a sport,
 
 *Q5:P54:Q12973014
 What sports team is {Q5} a member of?
@@ -95,13 +95,14 @@ What is {Q5}'s sports team?
 *Q5:P39:Q28640
 What position does {Q5} have in the job?
 What position does {Q5} have in the profession?
+# maybe also try; What role
 
 *Q5:P1449:Q82799
 What is {Q5}'s pseudonym?
 What is {Q5}'s nickname?
 What nickname does {Q5} have?
 What pseudonym does {Q5} have?
-With what name is {Q5} known?
+With what name is {Q5} known? # may return also proper name
 
 *Q5:P157:Q5
 Who killed {Q5}?
@@ -109,7 +110,7 @@ Who murdered {Q5}?
 Who is the killer of {Q5}?
 Who is the murderer of {Q5}?
 Who was {Q5} killed by?
-Who was {Q5} murderer by?
+Who was {Q5} murdered by?
 What person killed {Q5}?
 What person murdered {Q5}?
 What person is the killer of {Q5}?
@@ -131,7 +132,7 @@ In what event did {Q1274979} partake?
 
 *Q5:P2283:Q223557
 What object does {Q5} use?
-What is a object that {Q5} uses?
+What is an object that {Q5} uses?
 
 *Q5:P1290:Q5
 Who is {Q5}'s godparent?
@@ -148,7 +149,7 @@ Who is a friend of {Q5}?
 
 
 *Q1274979:P127:Q5
-Who is {Q1274979} owned by?
+By whom is {Q1274979} owned?
 Who owns {Q1274979}?
 Who is the owner of {Q1274979}?
 What person is {Q1274979} owned by?
@@ -164,6 +165,7 @@ Who is in charge of {Q43229}?
 What conflict is the cause of {Q180684}?
 What is the conflict that started {Q180684}?
 What conflict had the effect of {Q180684}?
+# What conflict resulted in {Q180684}?
 
 *Q43229:P170:Q5
 Who is {Q43229}'s creator?
@@ -188,7 +190,7 @@ What conflict is {Q5} the target of?
 What conflict affects {Q5}?
 
 *Q5:P3629:Q185836
-How old was {Q5} when it happened?
+How old was {Q5} when it happened? # will the model understand you are referring to Q185836 if you use "it" in the question?
 How old was {Q5} when it occurred?
 What was the age of {Q5} when it happened?
 What was the age of {Q5} when it occurred?
@@ -197,6 +199,8 @@ What was the age of {Q5} when it occurred?
 At what point in time did {Q1190554} happen?
 When did {Q1190554} happen?
 What was the calendar date when {Q1190554} happened?
+# On what day did {Q1190554} happen?
+# In what period did {Q1190554} happen?
 
 *Q5:P26:Q5
 Who is the spouse of {Q5}?
@@ -209,14 +213,14 @@ What country does {Q5} come from?
 What country is {Q5} from?
 
 *Q43229:P1344:Q1190554
-In what event did {Q43229} participated?
+In what event did {Q43229} participate?
 In what event did {Q43229} partake?
-In what occurrence did {Q43229} participated?
+In what occurrence did {Q43229} participate?
 In what occurrence did {Q43229} partake?
 
 *Q105673273:P361:Q223557
-What object is {Q105673273}?
-What object has the characteristic that {Q105673273}?
+What object is {Q105673273}? # do you have this for persons too?
+What object has the characteristic {Q105673273}?
 
 *Q223557:P127:Q5
 Who is {Q223557} owned by?
@@ -295,8 +299,8 @@ Who is a child of {Q5}?
 *Q5:P2650:Q26256810
 What topic is {Q5} interested in?
 What matter is {Q5} interested in?
-What topic does {Q5} have interest in?
-What matter does {Q5} have interest in?
+What topic does {Q5} have an interest in?
+What matter does {Q5} have an interest in?
 
 *Q5:P1346:Q500834
 What tournament did {Q5} win?
@@ -336,7 +340,7 @@ In what location did {Q180684} happen?
 What is {Q5}'s occupation?
 What does {Q5} do for a living?
 What is {Q5}'s job?
-What does {Q5}'s work consist on?
+What does {Q5}'s work consist in?
 
 *Q5:P1344:Q1190554
 In what occurrence did {Q5} participate?
@@ -345,7 +349,7 @@ In what event did {Q5} participate?
 In what event did {Q5} partake?
 
 *Q5:P2283:Q1274979
-What creature does {Q5} use?
+What creature does {Q5} use? # this is a bit weird. Objects are used, not creatures
 What being does {Q5} use?
 Who does {Q5} use?
 
@@ -374,14 +378,14 @@ Who is an enemy of {Q5}?
 
 *Q1190554:P1534:Q180684
 What conflict caused {Q1190554} to end?
-In what conflict did {Q1190554} culminate?
+In what conflict did {Q1190554} culminate? # like above: this is the oucome, not the cause of its end
 What conflict brought {Q1190554} to an end?
 
 *Q105673273:P361:Q5
 What person is {Q105673273}?
 Who is {Q105673273}?
-What person has the characteristic that {Q105673273}?
-Who has the characteristic that {Q105673273}?
+What person has the characteristic {Q105673273}?
+Who has the characteristic {Q105673273}?
 
 *Q1190554:P276:Q43229
 Where did {Q1190554} happen?
