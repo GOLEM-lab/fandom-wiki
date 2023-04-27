@@ -10,7 +10,9 @@ DIR_BASENAME=$(basename ${INPUT_DIR})
 DIR_BASENAME=results/${DIR_BASENAME}_scores
 mkdir -p $DIR_BASENAME
 
-for f in "${INPUT_DIR}/"*".csv"; do
+function eval_file {
+
+    f=$1
     echo $f
 
     PIPE=$(mktemp)
@@ -31,4 +33,11 @@ for f in "${INPUT_DIR}/"*".csv"; do
         --relations $RELATION_FILE > $OUTPUT_FILE
 
     rm $PIPE
+
+}
+
+for f in "${INPUT_DIR}/"*".csv"; do
+    eval_file $f &
 done
+
+wait

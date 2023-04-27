@@ -2,6 +2,8 @@ from .relation_utils import read_relations
 
 import pandas as pd
 
+from difflib import SequenceMatcher
+
 from argparse import ArgumentParser
 
 import sys
@@ -12,16 +14,45 @@ def f1(pre,rec):
         f1 = 2*pre*rec/f1
     return f1
 
+def _string_match_proportion(a1,a2,reduce_function=max):
+    match = SequenceMatcher(a=a1,b=a2).find_longest_match(alo=0, ahi=len(a1), blo=0, bhi=len(a2))
+    match_len = match.size
+
+    # Proportions
+    p1 = match_len/len(a1)
+    p2 = match_len/len(a2)
+
+    prop = reduce_function(p1,p2)
+    return prop
+
+
+def get_matching_relations(pred_df,gold_df,overlap_prop=0.2):
+    merged_df = pd.merge(pred_df,gold_df,on=["left_entity","relation"])
+
+    # Compute overlaps
+    overlap_mask = merged_df.apply(lambda x: _string_match_proportion(x.right_entity_x,x.right_entity_y) >= overlap_prop,axis=1)
+    merged_df = merged_df[overlap_mask]
+    merged_df = merged_df.groupby(["left_entity","relation","right_entity_y"]).first().reset_index() # Dont allow multiple predictions per relation
+
+    return merged_df
+
 def compute_scores(pred_df : pd.DataFrame, gold_df : pd.DataFrame):
-    merged_df = pd.merge(pred_df,gold_df)
-    relations = set(pred_df.relation.values) & set(gold_df.relation.values)
+    #merged_df = pd.merge(pred_df,gold_df)
+    merged_df = get_matching_relations(pred_df,gold_df)
+    
+    relations = set(pred_df.relation.values) | set(gold_df.relation.values)
     relations = list(relations)
 
     # Compute micro
     precision, recall = [], []
     for rel in relations:
-        pre = (merged_df.relation == rel).sum() / (pred_df.relation == rel).sum()
-        rec = (merged_df.relation == rel).sum() / (gold_df.relation == rel).sum()
+        merged_sum = (merged_df.relation == rel).sum()
+        pred_sum = (pred_df.relation == rel).sum()
+        gold_sum = (gold_df.relation == rel).sum()
+
+
+        pre =  merged_sum / pred_sum if pred_sum != 0 else 1
+        rec = merged_sum / gold_sum if gold_sum != 0 else 1
 
         precision.append(pre)
         recall.append(rec)
