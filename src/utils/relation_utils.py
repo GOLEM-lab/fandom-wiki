@@ -37,6 +37,7 @@ def generate_verbalizations(entities : pd.DataFrame, relations : pd.DataFrame):
 
     ent_rel = pd.merge(entities,relations,left_on="instance_of",right_on="cl_left")
     ent_rel = ent_rel.drop("instance_of",axis=1)
+    
     formated = ent_rel.apply(lambda x: 
             list(map(
                 op.methodcaller("format_map",{x.cl_left : x.entity_label}),
@@ -44,5 +45,5 @@ def generate_verbalizations(entities : pd.DataFrame, relations : pd.DataFrame):
         axis=1)
     formated.rename("verbalizations",inplace=True)
     
-    res =  pd.concat((ent_rel[["entity_label","rel_name"]],formated),axis=1)
+    res =  pd.concat((ent_rel[["entity_label","rel_name","cl_right"]],formated),axis=1)
     return res

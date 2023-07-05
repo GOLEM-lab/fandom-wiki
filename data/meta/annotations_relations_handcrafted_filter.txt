@@ -1,0 +1,389 @@
+*Q5:P2546:Q5
+Who is the sidekick of {Q5}?
+Who is {Q5}'s sidekick?
+Who is {Q5}'s companion?
+What person is the sidekick of {Q5}?
+What person is {Q5}'s sidekick?
+What person is {Q5}'s companion?
+
+*Q1190554:P533:Q43229
+What organization does {Q1190554} affect?
+What organization is {Q1190554} about?
+What organization is the focus of {Q1190554}?
+What organization is the target of {Q1190554}?
+
+*Q1190554:P828:Q180684
+What conflict is the cause of {Q1190554}?
+What is the conflict that started {Q1190554}?
+What conflict had the effect of {Q1190554}?
+
+*Q5:P1344:Q180684
+In what conflict did {Q5} participate?
+In what conflict did {Q5} partake?
+
+*Q180684:P533:Q1274979
+What creature does {Q180684} affect?
+What creature is the focus of {Q180684}?
+What creature is the target of {Q180684}?
+Who does {Q180684} affect?
+Who is the focus of {Q180684}?
+Who is the target of {Q180684}?
+
+*Q5:P7047:Q1274979
+What creature is {Q5}'s enemy?
+What enemy does {Q5} have?
+Who is {Q5}'s enemy?
+Who is an enemy of {Q5}?
+
+*Q1190554:P1534:Q5
+Who caused the end of {Q1190554}?
+What person caused the end of {Q1190554}?
+What person caused {Q1190554} to end?
+Who caused {Q1190554} to end?
+What person brought {Q1190554} to an end?
+Who brought {Q1190554} to an end?
+
+*Q5:P27:Q105673273
+What is {Q5}'s citizenship?
+What is the citizenship of {Q5}?
+Where does {Q5} live?
+
+
+*Q5:P551:Q115095765
+Where is {Q5}'s residence?
+Where is {Q5}'s home?
+Where is {Q5}'s house?
+Where does {Q5} live?
+In what location is {Q5}'s residence?
+In what location is {Q5}'s home?
+In what location is {Q5}'s house?
+In what location does {Q5} live?
+
+*Q180684:P1534:Q1190554
+What event caused {Q180684} to end?
+What occurrence caused {Q180684} to end?
+What event brought {Q180684} to an end?
+What occurrence brought {Q180684} to an end?
+
+*Q5:P3373:Q5
+Who is {Q5}'s sibling?
+Who is a sibling of {Q5}?
+
+*Q1190554:P533:Q223557
+What object does {Q1190554} affect?
+What object is {Q1190554} about?
+What object is the target of {Q1190554}?
+
+*Q5:P569:Q205892
+What is {Q5}'s date of birth?
+When was {Q5} born?
+On what date was {Q5} born?
+
+*Q5:P413:Q1781513
+What is {Q5}'s speciality position in a sport?
+In a sport, what position does {Q5} play in?
+
+*Q5:P54:Q12973014
+What sports team is {Q5} a member of?
+What is {Q5}'s sports team?
+
+*Q5:P39:Q28640
+What position does {Q5} have in the job?
+What position does {Q5} have in the profession?
+What role does {Q5} have in the job?
+What role does {Q5} have in the profession?
+What role does {Q5} play in the job?
+What role does {Q5} play in the profession?
+
+*Q5:P1449:Q82799
+What is {Q5}'s pseudonym?
+What is {Q5}'s nickname?
+What nickname does {Q5} have?
+What pseudonym does {Q5} have?
+
+*Q5:P157:Q5
+Who killed {Q5}?
+Who murdered {Q5}?
+Who is the killer of {Q5}?
+Who is the murderer of {Q5}?
+Who was {Q5} killed by?
+Who was {Q5} murdered by?
+What person killed {Q5}?
+What person murdered {Q5}?
+What person is the killer of {Q5}?
+What person is the murderer of {Q5}?
+What person was {Q5} killed by?
+What person was {Q5} murderer by?
+
+*Q5:P533:Q1190554
+What occurrence is {Q5} the target of?
+What event is {Q5} the target of?
+What occurrence affects {Q5}?
+What event affects {Q5}?
+
+*Q1274979:P1344:Q1190554
+In what occurrence did {Q1274979} participate?
+In what occurrence did {Q1274979} partake?
+In what event did {Q1274979} participate?
+In what event did {Q1274979} partake?
+
+*Q5:P2283:Q223557
+What object does {Q5} use?
+What is an object that {Q5} uses?
+
+*Q5:P1290:Q5
+Who is {Q5}'s godparent?
+Who is the godparent of {Q5}?
+What person is {Q5}'s godparent?
+What person is the godparent of {Q5}?
+
+*Q5:P172:Q105673273
+What ethnic group does {Q5} belong to?
+
+*Q5:P3342:Q5
+Who is {Q5}'s friend?
+Who is a friend of {Q5}?
+
+
+*Q1274979:P127:Q5
+By whom is {Q1274979} owned?
+Who owns {Q1274979}?
+Who is the owner of {Q1274979}?
+What person is {Q1274979} owned by?
+What person owns {Q1274979}?
+What person is the owner of {Q1274979}?
+
+
+*Q43229:P2389:Q28640
+Who directs {Q43229}?
+Who is in charge of {Q43229}?
+
+*Q180684:P828:Q180684
+What conflict is the cause of {Q180684}?
+What is the conflict that started {Q180684}?
+What conflict had the effect of {Q180684}?
+# What conflict resulted in {Q180684}?
+
+*Q43229:P170:Q5
+Who is {Q43229}'s creator?
+Who is the creator of {Q43229}?
+Who created {Q43229}?
+What person is {Q43229}'s creator?
+What person is the creator of {Q43229}?
+What person created {Q43229}?
+
+*Q5:P7047:Q43229
+What organization is {Q5}'s enemy?
+What organization is an enemy of {Q5}?
+
+*Q5:P69:Q43229
+Where was {Q5} educated at?
+Where did {Q5} study?
+What institution was {Q5} educated at?
+In what institution did {Q5} study?
+
+*Q5:P533:Q180684
+What conflict is {Q5} the target of?
+What conflict affects {Q5}?
+
+*Q5:P3629:Q185836
+How old was {Q5} when it happened?
+How old was {Q5} when it occurred?
+What was the age of {Q5} when it happened?
+What was the age of {Q5} when it occurred?
+
+*Q1190554:P585:Q205892
+At what point in time did {Q1190554} happen?
+When did {Q1190554} happen?
+What was the calendar date when {Q1190554} happened?
+On what day did {Q1190554} happen?
+In what period did {Q1190554} happen?
+
+*Q5:P26:Q5
+Who is the spouse of {Q5}?
+Who is {Q5}'s spouse?
+
+*Q5:P27:Q231002
+What is {Q5}'s nationality?
+What is the country of {Q5}?
+What country does {Q5} come from?
+What country is {Q5} from?
+
+*Q43229:P1344:Q1190554
+In what event did {Q43229} participate?
+In what event did {Q43229} partake?
+In what occurrence did {Q43229} participate?
+In what occurrence did {Q43229} partake?
+
+*Q105673273:P361:Q223557
+What object is {Q105673273}?
+What object has the characteristic {Q105673273}?
+
+*Q223557:P127:Q5
+Who is {Q223557} owned by?
+Who owns {Q223557}?
+Who is the owner of {Q223557}?
+What person is {Q223557} owned by?
+What person owns {Q223557}?
+What person is the owner of {Q223557}?
+
+*Q5:P361:Q105673273
+What attribute does {Q5} have?
+What characteristic does {Q5} have?
+
+*Q5:P106:Q43229
+For what institution does {Q5} work?
+For what organization does {Q5} work?
+What institution does {Q5} work for?
+What organization does {Q5} work for?
+
+*Q5:P69:Q115095765
+In what place did {Q5} study?
+In what place was {Q5} educated at?
+Where was the instituion {Q5} studied at located?
+In what location was the instituion {Q5} studied at?
+
+*Q5:P8810:Q5
+Who is {Q5}'s parent?
+Who is a parent of {Q5}?
+What person is {Q5}'s parent?
+What person is a parent of {Q5}?
+
+*Q5:P22:Q5
+Who is {Q5}'s father?
+Who is the father of {Q5}?
+What person is {Q5}'s father?
+What person is the father of {Q5}?
+
+*Q5:P25:Q5
+Who is {Q5}'s mother?
+Who is the mother of {Q5}?
+What person is {Q5}'s mother?
+What person is the mother of {Q5}?
+
+*Q43229:P828:Q1190554
+What is the cause of {Q43229}?
+What event caused {Q43229}?
+What is the event that caused {Q43229}?
+
+*Q5:P1429:Q39201
+Who is {Q5}'s pet?
+What pet does {Q5} have?
+
+*Q1190554:P276:Q115095765
+Where did {Q1190554} happen?
+Where did {Q1190554} take place?
+In what location did {Q1190554} take place?
+In what location did {Q1190554} happen?
+
+*Q1190554:P1534:Q223557
+What object caused {Q1190554} to end?
+What object brought {Q1190554} to an end?
+What is the thing that caused {Q1190554} to end?
+What is the thing that brought {Q1190554} to an end?
+
+*Q5:P276:Q115095765
+What is {Q5}'s location?
+Where is {Q5} located?
+In what place is {Q5} located?
+What is the location of {Q5}?
+In what location is {Q5}?
+
+*Q5:P40:Q5
+Who is {Q5}'s child?
+Who is a child of {Q5}?
+
+*Q5:P2650:Q26256810
+What topic is {Q5} interested in?
+What matter is {Q5} interested in?
+What topic does {Q5} have an interest in?
+What matter does {Q5} have an interest in?
+
+*Q5:P1346:Q500834
+What tournament did {Q5} win?
+What competition did {Q5} win?
+
+*Q5:P1971:Q105673273
+How many children does {Q5} have?
+What number of children does {Q5} have?
+
+*Q1274979:P533:Q1190554
+What occurrence is {Q1274979} the target of?
+What event is {Q1274979} the target of?
+What occurrence affects {Q1274979}?
+What event affects {Q1274979}?
+
+*Q1190554:P828:Q1190554
+What is the cause of {Q1190554}?
+What event caused {Q1190554}?
+What is the event that caused {Q1190554}?
+
+*Q5:P463:Q43229
+What organization is {Q5} a member of?
+{Q5} is a member of what organization?
+What instituion is {Q5} a member of?
+{Q5} is a member of what instituion?
+
+*Q5:P1534:Q223557
+{Q5} end cause?
+
+*Q180684:P276:Q115095765
+Where did {Q180684} happen?
+Where did {Q180684} take place?
+In what location did {Q180684} take place?
+In what location did {Q180684} happen?
+
+*Q5:P106:Q28640
+What is {Q5}'s occupation?
+What does {Q5} do for a living?
+What is {Q5}'s job?
+What does {Q5}'s work consist in?
+
+*Q5:P1344:Q1190554
+In what occurrence did {Q5} participate?
+In what occurrence did {Q5} partake?
+In what event did {Q5} participate?
+In what event did {Q5} partake?
+
+*Q5:P2283:Q1274979
+What being does {Q5} use?
+Who does {Q5} use?
+
+*Q5:P569:Q1190554
+What was going on when {Q5} was born?
+What was happening when {Q5} was born?
+During what event was {Q5} born?
+During what occurrence was {Q5} born?
+
+*Q5:P1344:Q26256810
+In what matter did {Q5} participate?
+In what matter did {Q5} partake?
+In what topic did {Q5} participate?
+In what topic did {Q5} partake?
+
+*Q5:P9652:Q105673273
+What is a personality trait of {Q5}?
+What is the personality of {Q5} like?
+What personality does {Q5} have?
+
+*Q5:P7047:Q5
+What person is {Q5}'s enemy?
+What enemy does {Q5} have?
+Who is {Q5}'s enemy?
+Who is an enemy of {Q5}?
+
+*Q1190554:P1534:Q180684
+What conflict caused {Q1190554} to end?
+What conflict brought {Q1190554} to an end?
+
+*Q105673273:P361:Q5
+What person is {Q105673273}?
+Who is {Q105673273}?
+What person has the characteristic {Q105673273}?
+Who has the characteristic {Q105673273}?
+
+*Q1190554:P276:Q43229
+Where did {Q1190554} happen?
+Where did {Q1190554} take place?
+In what location did {Q1190554} take place?
+In what location did {Q1190554} happen?

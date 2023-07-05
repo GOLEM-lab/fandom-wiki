@@ -9,7 +9,7 @@ mkdir -p results/${FILE_BASENAME}
 
 # Hparam
 relations_per_question=( 1 2 4 8 )
-relations_per_question=( 1 2 4 8 16 32 64 128 256)
+relations_per_question=( 1 2 4 8 16 32 64 128)
 
 confidence_reduction=( "min_confidence" "max_confidence" "bayesian" )
 confidence_reduction_internal=( "max_confidence" "bayesian" )

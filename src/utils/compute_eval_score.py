@@ -3,6 +3,7 @@ from .relation_utils import read_relations
 import pandas as pd
 
 from difflib import SequenceMatcher
+from statistics import mean
 
 from argparse import ArgumentParser
 
@@ -22,17 +23,21 @@ def _string_match_proportion(a1,a2,reduce_function=max):
     p1 = match_len/len(a1)
     p2 = match_len/len(a2)
 
-    prop = reduce_function(p1,p2)
+    prop = reduce_function((p1,p2))
     return prop
 
 
-def get_matching_relations(pred_df,gold_df,overlap_prop=0.2):
+def get_matching_relations(pred_df,gold_df,overlap_prop=0.5):
     merged_df = pd.merge(pred_df,gold_df,on=["left_entity","relation"])
 
     # Compute overlaps
     overlap_mask = merged_df.apply(lambda x: _string_match_proportion(x.right_entity_x,x.right_entity_y) >= overlap_prop,axis=1)
     merged_df = merged_df[overlap_mask]
+    merged_df = merged_df[merged_df.right_entity_y.notna()]
+    merged_df = merged_df[merged_df.right_entity_x.notna()]
     merged_df = merged_df.groupby(["left_entity","relation","right_entity_y"]).first().reset_index() # Dont allow multiple predictions per relation
+
+   
 
     return merged_df
 

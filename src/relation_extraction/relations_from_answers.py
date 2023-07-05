@@ -177,18 +177,20 @@ def relations_from_answers(answers : dict,
                             top_k = -1):
     relations = []
     for relation,answer_dict1 in answers:
-        for entity  in answer_dict1.keys():
-            answer_dict2 = answer_dict1[entity]
+        for class_key in answer_dict1.keys():
+            answer_dict2 = answer_dict1[class_key]
+            for entity  in answer_dict2.keys():
+                answer_dict3 = answer_dict2[entity]
 
-            answer_list = map(op.itemgetter("answers"),answer_dict2)
-            answer_list = map(op.methodcaller("__getitem__",slice(top_k)),answer_list)
-            answer_list = list(map(_filter_impossible_ans,answer_list))
-            merged_answer = _merge_answers(answer_list,
-                                            external_conf_reduction=external_conf_reduction,
-                                            internal_conf_reduction=internal_conf_reduction,
-                                            merge_threshold=merge_threshold)
+                answer_list = map(op.itemgetter("answers"),answer_dict3)
+                answer_list = map(op.methodcaller("__getitem__",slice(top_k)),answer_list)
+                answer_list = list(map(_filter_impossible_ans,answer_list))
+                merged_answer = _merge_answers(answer_list,
+                                                external_conf_reduction=external_conf_reduction,
+                                                internal_conf_reduction=internal_conf_reduction,
+                                                merge_threshold=merge_threshold)
 
-            relations.extend((entity,relation,ca["answer"],ca["score"]) for ca in merged_answer)
+                relations.extend((entity,relation,ca["answer"],ca["score"]) for ca in merged_answer)
     return relations
 
 

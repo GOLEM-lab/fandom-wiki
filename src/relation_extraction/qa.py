@@ -36,19 +36,43 @@ def generate_answers(context, verbalizations : pd.DataFrame ,qa,config):
     # Align with questions
     ans_dicts = [[dict(question=all_verb[i],answers=ans[i]) for i in rg] for rg in verb_ranges]
 
-    # Create dataframe
-    res = verbalizations[["entity_label","rel_name"]]
+    # Create dataframe aligned
+    res = verbalizations[["entity_label","rel_name","cl_right"]]
     res["answers"] = ans_dicts
 
     return res
 
-def answers_to_dict(answers: pd.DataFrame):
-    ans_dicts = answers.apply(lambda x: {x.entity_label : x.answers},axis=1)
-    ans_dicts = pd.concat((answers["rel_name"],ans_dicts),axis=1)
-    ans_dicts = ans_dicts.groupby("rel_name").agg(lambda x: ftools.reduce(op.or_,x))
+def _aggregate_group(df : pd.DataFrame, group_name : str):
+    
+    print(df)
+    
+    agg_df = df.groupby(group_name).agg(agg_function)
 
-    ans_dicts = ans_dicts.to_dict()
-    ans_dicts = ans_dicts[0]
+    print(agg_df)
+
+    return agg_df
+
+def answers_to_dict(answers: pd.DataFrame):
+ 
+    list_merger = lambda x: list(itools.chain(*x))
+    dict_merger = lambda x: ftools.reduce(op.or_, x, {})
+
+    grouped_answers = answers.drop("context",axis=1)
+    grouped_answers = grouped_answers.groupby(["rel_name","cl_right","entity_label"]).agg(list_merger)
+    grouped_answers.reset_index(inplace=True)
+    grouped_answers["answers"] = grouped_answers.apply(lambda x: {x.entity_label : x.answers},axis=1)
+    
+    grouped_answers.drop("entity_label",axis=1,inplace=True)
+    grouped_answers = grouped_answers.groupby(["rel_name","cl_right"]).agg(dict_merger)
+    grouped_answers.reset_index(inplace=True)
+    grouped_answers["answers"] = grouped_answers.apply(lambda x: {x.cl_right : x.answers},axis=1)
+
+    grouped_answers.drop("cl_right",axis=1,inplace=True)
+    grouped_answers = grouped_answers.groupby("rel_name").agg(dict_merger)
+    grouped_answers.reset_index(inplace=True)
+    ans_dicts = grouped_answers.apply(lambda x: {x.rel_name : x.answers},axis=1)
+
+    ans_dicts = ans_dicts.aggregate(dict_merger)
 
     return ans_dicts
 

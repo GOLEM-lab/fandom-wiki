@@ -6,6 +6,8 @@ RELATION_FILE=$3
 
 CONF_LIM=${CONF_LIM:-0}
 
+IMIN=$(dirname $0)
+
 DIR_BASENAME=$(basename ${INPUT_DIR})
 DIR_BASENAME=results/${DIR_BASENAME}_scores
 mkdir -p $DIR_BASENAME
@@ -22,7 +24,7 @@ function eval_file {
     OUTPUT_FILE=$(basename ${f})
     OUTPUT_FILE=${DIR_BASENAME}/${OUTPUT_FILE}
 
-    cat $f | python -c "import pandas as pd; import sys; df = pd.read_csv(sys.stdin,header=0); df[df.confidence >= $CONF_LIM].to_csv(sys.stdout,index=False)" > $PIPE &
+    cat $f | $IMIN/filter_csv_confidence.sh $CONF_LIM > $PIPE &
 
     #cat data/enwiki-20160501/validation.csv | 
     cat data/annotation/harry_potter_annotations.csv | 

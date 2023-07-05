@@ -120,7 +120,8 @@ if __name__ == "__main__":
         eval_df_mask = eval_df.relation.apply(set(rel_df["rel_name"].values).__contains__)
         eval_df = eval_df[eval_df_mask]
 
-    ans = eval_df.groupby("context",group_keys=True).progress_apply(qa4eval.answers_for_context)
+    ans : pd.DataFrame = eval_df.groupby("context",group_keys=True).progress_apply(qa4eval.answers_for_context)
+    ans.reset_index(level=["context"],inplace=True)
 
     ans_dict = qa.answers_to_dict(ans)
     json.dump(ans_dict,sys.stdout)

@@ -4,4 +4,8 @@ data/*
 !data/meta
 results/
 env/
+env_langchain/
+
 test/
+*.log
+API_keys.csv

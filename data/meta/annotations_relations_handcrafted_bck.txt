@@ -41,7 +41,7 @@ What does {Q5} do for a living?
 What is {Q5}'s job?
 
 *Q5:P2283:Q1274979
-What creature does {Q5} use? # What object
+What creature does {Q5} use?
 What being does {Q5} use?
 Who does {Q5} use?
 
@@ -72,7 +72,7 @@ In what occurrence did {Q43229} partake?
 *Q1190554:P533:Q223557
 What object does {Q1190554} affect?
 What object is {Q1190554} about?
-What object is the Q1190554 of {Q180684}? # brackets missing?
+What object is the target of {Q180684}?
 
 *Q5:P569:Q1190554
 What was going on when {Q5} was born?
