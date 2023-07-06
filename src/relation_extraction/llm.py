@@ -19,6 +19,18 @@ def provider_key_from_csv(csvreader : csv.DictReader, provider : str) -> str:
 
     return key
 
+def relations_from_csv(csvreader : csv.DictReader) -> Dict[str,str]:
+    csvreader = iter(csvreader) 
+    header = next(csvreader)
+
+    prop_col = header.index("prop")
+    propLabel_col = header.index("propLabel")
+
+    relations = {r[prop_col] : r[propLabel_col] for r in csvreader}
+    RelationEnum = Enum("RelationEnum",enum_dict)
+
+    return relations
+
 def _build_parser():
     parser = ArgumentParser()
     
