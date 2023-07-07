@@ -1,35 +1,10 @@
 import langchain
 
-import csv
+import pandas as pd
 
 from argparse import ArgumentParser
 from importlib import import_module
 
-def provider_key_from_csv(csvreader : csv.DictReader, provider : str) -> str:
-    csvreader = iter(csvreader) 
-    header = next(csvreader)
-
-    provider_col = header.index("provider")
-    key_col = header.index("key")
-
-    key = None
-    for row in csvreader:
-        if row[provider_col] != provider: continue
-        key = row[key_col]; break
-
-    return key
-
-def relations_from_csv(csvreader : csv.DictReader) -> Dict[str,str]:
-    csvreader = iter(csvreader) 
-    header = next(csvreader)
-
-    prop_col = header.index("prop")
-    propLabel_col = header.index("propLabel")
-
-    relations = {r[prop_col] : r[propLabel_col] for r in csvreader}
-    RelationEnum = Enum("RelationEnum",enum_dict)
-
-    return relations
 
 def _build_parser():
     parser = ArgumentParser()
@@ -48,11 +23,14 @@ if __name__ == "__main__":
     parser = _build_parser()
     args = parser.parse_args()
 
-    with open(args.keyfile, newline='') as csvfile:
-        csvreader = csv.reader(csvfile)
-        key = provider_key_from_csv(csvreader,args.provider)
-
-    if key is None:
+    # Get Provider Key
+    keyfile_df = pd.read_csv(args.keyfile)
+    
+    provider_mask = keyfile_df.provider == args.provider
+    key = provider_mask.idmax()
+    if provider_mask[key]:
+        key = keyfile_df.iloc[key]
+    else:
         raise RuntimeError(f"Provider \"{args.provider}\" key not found in keyfile \"{args.keyfile}\"")
     
     # Get provider

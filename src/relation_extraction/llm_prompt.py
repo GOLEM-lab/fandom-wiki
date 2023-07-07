@@ -1,16 +1,39 @@
 from langchain.output_parsers import PydanticOutputParser
-from langchain.prompts.few_shot import FewShotPromptTemplate
+from langchain.prompts.few_shot import FewShotPromptTemplate, FewShotPromptWithTemplates
 from langchain.prompts.prompt import PromptTemplate
+
+import pandas as pd
 
 from pydantic import BaseModel, Field
 from enum import Enum, EnumMeta
 from typing import List, Dict, Optional
 
+def reformat_examples(example_df : pd.DataFrame) -> List[Dict[str,str]]:
+    
+    def make_relations_dict(df : pd.DataFrame):
+        records = df.to_dict(orient="records")
+        records = records
+        return records
+
+    relation_columns_old = ["context","left_entity","right_entity","relation"]
+    relation_columns_new = ["text","subj","obj","rel"]
+
+    example_df = example_df.rename(columns=dict(zip(relation_columns_old,relation_columns_new)))
+    example_df = example_df[relation_columns_new]
+    
+    example_df_group = example_df.groupby("text",group_keys=False)
+    example_df = example_df_group[relation_columns_new[1:]].apply(make_relations_dict)
+    example_df.name = "relations"
+    example_df = example_df.reset_index()
+        
+    examples = example_df.to_dict(orient="records")
+    return examples
+
 class RelationExtractionPromptBuilder:
     EXAMPLE_INPUT = "Text:\n{text}"
     EXAMPLE_OUTPUT = "Relations:\n{relations}"
 
-    EXAMPLE_TEMPLATE = "\n".join(EXAMPLE_INPUT,EXAMPLE_OUTPUT)
+    EXAMPLE_TEMPLATE = "\n\n".join((EXAMPLE_INPUT,EXAMPLE_OUTPUT))
 
     PROMPT_HEADER = "Extract relations from the text."
 
@@ -33,18 +56,21 @@ class RelationExtractionPromptBuilder:
 
         return parser
 
-    def _get_examples_prompt(self):
+    def _get_examples_prompt(self,prefix_prompt=None):
 
         if self.examples is None:
             raise ValueError("\"examples\" attribute is None. Cannot generate a few-shot prompt without examples.")
 
         example_prompt = PromptTemplate.from_template(self.EXAMPLE_TEMPLATE)
+        suffix_prompt = PromptTemplate.from_template(self.EXAMPLE_INPUT)
 
-        prompt = FewShotPromptTemplate(
+        prompt = FewShotPromptWithTemplates(
             examples=self.examples, 
             example_prompt=example_prompt, 
-            suffix=self.EXAMPLE_INPUT, 
-            input_variables=["text"])
+            suffix=suffix_prompt,
+            prefix=prefix_prompt,
+            input_variables=["text"],
+            partial_variables=)
 
         return prompt
 
@@ -52,21 +78,26 @@ class RelationExtractionPromptBuilder:
 
         # Get prompt sections
         output_parser = self._get_output_parser()
-        try:
-            example_prompt = self._get_examples_prompt()
-        except ValueError:
-            example_prompt = None
-
         output_parser_prompt = output_parser.get_format_instructions()
 
-        # Assemble
-        paragraph = [PROMPT_HEADER,output_parser_prompt]
-        if example_prompt is not None: 
-            example_prompt = example_prompt.format("{input}")
-            paragraph.append(example_prompt)
+        try:
+            prefix_template = "\n\n".join((self.PROMPT_HEADER,"{instructions}"))
+            prefix_template = PromptTemplate(template=prefix_template,
+                                        input_variables=[],
+                                        partial_variables=dict(instructions=output_parser_prompt))
+            final_prompt = self._get_examples_prompt(prefix_template)
+        except ValueError:
+            final_prompt = None
 
-        final_prompt = "\n".join(paragraph)
-        final_prompt = PromptTemplate.from_template(final_prompt)
+
+        # Assemble
+        if final_prompt is not None: 
+            return final_prompt
+            
+        final_template = "\n\n".join((self.PROMPT_HEADER,"{instructions}","{input}"))
+        final_prompt = PromptTemplate(template=final_template,
+                                    input_variables=["text"],
+                                    partial_variables=dict(instructions=output_parser_prompt))
 
         return final_prompt
 
