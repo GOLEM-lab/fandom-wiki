@@ -1,0 +1,16 @@
+prop,propLabel,left_class,right_class,description
+P2546,sidekick of,Q5,Q5,close companion of a fictional character
+P1344,participant in,Q5,Q180684,event in which a person is a participant
+P7047,enemy,Q5,Q1274979,opponent character or group of this fictive character or group
+P3373,sibling,Q5,Q5,to have at least one common parent
+P157,killed by,Q5,Q5,person who killed the subject
+P127,owned by,Q1274979,Q5,owner of the subject
+P828,has cause,Q180684,Q180684,"underlying cause, thing that ultimately resulted in this effect"
+P26,spouse,Q5,Q5,the subject has the object as their spouse
+P22,father,Q5,Q5,male parent of the subject
+P25,mother,Q5,Q5,female parent of the subject
+P276,location,Q1190554,Q115095765,"location of the object, structure or event"
+P1346,winner,Q5,Q500834,winner of a competition or similar event
+P69,educated at,Q5,Q43229,educational institution attended by subject
+P551,residence,Q5,Q115095765,"the place where the person is or has been, resident"
+P27,citizenship,Q5,Q231002,country that recognizes the subject as its citizen
