@@ -2,6 +2,9 @@ __pycache__
 __init__.py
 data/*
 !data/meta
+!data/fewshot
+!data/annotation
+
 results/
 env/
 env_langchain/
