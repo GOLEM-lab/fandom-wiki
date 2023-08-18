@@ -10,6 +10,7 @@ import json
 from argparse import ArgumentParser
 from importlib import import_module
 import warnings
+from tqdm import tqdm
 
 import sys
 
@@ -137,7 +138,7 @@ if __name__ == "__main__":
 
     ## Test
     result = []
-    for e in tgt:
+    for e in tqdm(tgt):
         p = prompt.format(text=e["text"])
 
         with warnings.catch_warnings():
