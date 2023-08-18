@@ -1,22 +1,42 @@
 from langchain.output_parsers import PydanticOutputParser
-from langchain.prompts.few_shot import FewShotPromptTemplate, FewShotPromptWithTemplates
+from langchain.prompts.few_shot import FewShotPromptTemplate
 from langchain.prompts.prompt import PromptTemplate
 
 import pandas as pd
+import numpy as np
 
-from pydantic import BaseModel, Field
 from enum import Enum, EnumMeta
 from typing import List, Dict, Optional
+
+from argparse import ArgumentParser
+import pprint
+
+def filter_examples(example_df : pd.DataFrame, relation_df : pd.DataFrame):
+
+    relations = relation_df["prop"].unique()
+    relation_labels = relation_df["propLabel"].unique()
+
+    relation_remap = dict(zip(relations,relation_labels))
+
+    example_df : pd.DataFrame = example_df[example_df["relation"].isin(relations)]
+    example_df = example_df.copy()
+
+    example_df["relation"] = example_df["relation"].map(relation_remap)
+
+    return example_df
 
 def reformat_examples(example_df : pd.DataFrame) -> List[Dict[str,str]]:
     
     def make_relations_dict(df : pd.DataFrame):
         records = df.to_dict(orient="records")
-        records = records
+        records = pprint.pformat(records)
+        records = records.replace("{","{{")
+        records = records.replace("}","}}")
+
         return records
 
     relation_columns_old = ["context","left_entity","right_entity","relation"]
-    relation_columns_new = ["text","subj","obj","rel"]
+    relation_columns_new = ["text","subject","object","relation"]
 
     example_df = example_df.rename(columns=dict(zip(relation_columns_old,relation_columns_new)))
     example_df = example_df[relation_columns_new]
@@ -37,24 +57,22 @@ class RelationExtractionPromptBuilder:
 
     PROMPT_HEADER = "Extract relations from the text."
 
-    def __init__(self, relations : Dict[str,str], examples : Optional[dict] = None):
+    INST_HEADER = "The relation must be one of the following:"
+    INST_FOOTER = "And the result must be provided in JSON format."
+
+
+    def __init__(self, relations : pd.DataFrame, examples : Optional[dict] = None):
         self.relations = relations
         self.examples = examples
 
-    def _get_output_parser(self) -> PydanticOutputParser:
-        RelationEnum = Enum("RelationEnum", self.relations)
+    def _get_instructions(self):
+        rel_desc = [f"\"{r.propLabel}\": {r.description}" for _, r in self.relations.iterrows()]
+        rel_desc = "\n".join(rel_desc)
 
-        class RelationTriple(BaseModel):
-            subj : str = Field(description="Subject of the relation")
-            obj : str = Field(description="Object of the relation")
-            rel : RelationEnum = Field(description="Type of relation")
+        instructions = "\n\n".join((self.INST_HEADER, rel_desc, self.INST_FOOTER))
 
-        class Relations(BaseModel):
-            relations : List[RelationTriple] = Field(description="List of relation triples.")
+        return instructions
 
-        parser = PydanticOutputParser(pydantic_object=Relations)
-
-        return parser
 
     def _get_examples_prompt(self,prefix_prompt=None):
 
@@ -62,43 +80,84 @@ class RelationExtractionPromptBuilder:
             raise ValueError("\"examples\" attribute is None. Cannot generate a few-shot prompt without examples.")
 
         example_prompt = PromptTemplate.from_template(self.EXAMPLE_TEMPLATE)
-        suffix_prompt = PromptTemplate.from_template(self.EXAMPLE_INPUT)
 
-        prompt = FewShotPromptWithTemplates(
+        prompt = FewShotPromptTemplate(
             examples=self.examples, 
             example_prompt=example_prompt, 
-            suffix=suffix_prompt,
+            suffix=self.EXAMPLE_INPUT,
             prefix=prefix_prompt,
-            input_variables=["text"],
-            partial_variables=)
+            input_variables=["text"])
 
         return prompt
 
     def get_prompt(self):
-
-        # Get prompt sections
-        output_parser = self._get_output_parser()
-        output_parser_prompt = output_parser.get_format_instructions()
-
+        instructions = self._get_instructions()
+        prefix = "\n\n".join((self.PROMPT_HEADER,instructions))
         try:
-            prefix_template = "\n\n".join((self.PROMPT_HEADER,"{instructions}"))
-            prefix_template = PromptTemplate(template=prefix_template,
-                                        input_variables=[],
-                                        partial_variables=dict(instructions=output_parser_prompt))
-            final_prompt = self._get_examples_prompt(prefix_template)
+            final_prompt = self._get_examples_prompt(prefix)
         except ValueError:
             final_prompt = None
-
 
         # Assemble
         if final_prompt is not None: 
             return final_prompt
             
-        final_template = "\n\n".join((self.PROMPT_HEADER,"{instructions}","{input}"))
-        final_prompt = PromptTemplate(template=final_template,
-                                    input_variables=["text"],
-                                    partial_variables=dict(instructions=output_parser_prompt))
+        final_template = "\n\n".join((self.PROMPT_HEADER,instructions,"Text:","{text}"))
+        final_prompt = PromptTemplate.from_template(final_template)
 
         return final_prompt
 
+def _build_parser():
+    parser = ArgumentParser()
     
+    # Input files
+    input_group = parser.add_argument_group("Input options")
+    input_group.add_argument("--relations", required=True, help="Filepath of the \".csv\" file containing the relations to predict and their descriptions.")
+    input_group.add_argument("--target", required=True, help="Filepath of the \".csv\" file containing the target examples")
+    input_group.add_argument("--examples", help="Filepath of the \".csv\" file containing examples to use for few-shot.")
+
+    behaviour_group = parser.add_argument_group("Behaviour options")
+    behaviour_group.add_argument("--num_examples", type=int, default=2, help="Maximum number of examples to use.")
+    behaviour_group.add_argument("--example_selection", choices=["linear","random"], default="random", help="How to choose the examples to use.")
+
+    return parser
+
+if __name__ == "__main__":
+    parser = _build_parser()
+    args = parser.parse_args()
+
+    rel_df = pd.read_csv(args.relations)
+    tgt_df = pd.read_csv(args.target)
+
+    tgt_df = filter_examples(tgt_df,rel_df)
+    tgt = reformat_examples(tgt_df)
+
+    ex = None
+    if args.examples:
+        ex_df = pd.read_csv(args.examples)
+        ex_df = filter_examples(ex_df,rel_df)
+
+        ex = reformat_examples(ex_df)
+
+        if args.example_selection == "linear":
+            ex = ex[:args.num_examples]
+        else:
+            perm = np.random.permutation(len(ex))
+            perm = perm[:args.num_examples]
+
+            ex = list(map(ex.__getitem__,perm))
+    
+    repb = RelationExtractionPromptBuilder(rel_df,ex)
+    prompt = repb.get_prompt()
+
+    for e in tgt:
+        p = prompt.format(text=e["text"])
+        print(p)
+
+        print()
+
+        print("### ANNOTATION")
+        print(e["relations"])
+        print("### END ANNOTATION")
+
+        print()
