@@ -29,6 +29,10 @@ def reformat_examples(example_df : pd.DataFrame) -> List[Dict[str,str]]:
     
     def make_relations_dict(df : pd.DataFrame):
         records = df.to_dict(orient="records")
+        return records
+
+    def make_relations_prettydict(df : pd.DataFrame):
+        records = df.to_dict(orient="records")
         records = pprint.pformat(records)
         records = records.replace("{","{{")
         records = records.replace("}","}}")
@@ -45,21 +49,22 @@ def reformat_examples(example_df : pd.DataFrame) -> List[Dict[str,str]]:
     example_df = example_df_group[relation_columns_new[1:]].apply(make_relations_dict)
     example_df.name = "relations"
     example_df = example_df.reset_index()
+    example_df["relations_text"] = example_df_group[relation_columns_new[1:]].apply(make_relations_prettydict).to_list()
         
     examples = example_df.to_dict(orient="records")
     return examples
 
 class RelationExtractionPromptBuilder:
     EXAMPLE_INPUT = "Text:\n{text}"
-    EXAMPLE_OUTPUT = "Relations:\n{relations}"
+    EXAMPLE_OUTPUT = "Relations:\n{relations_text}"
 
     EXAMPLE_TEMPLATE = "\n\n".join((EXAMPLE_INPUT,EXAMPLE_OUTPUT))
+    EXAMPLE_TEMPLATE_FINAL = "\n\n".join((EXAMPLE_INPUT,"Relations:\n"))
 
     PROMPT_HEADER = "Extract relations from the text."
 
     INST_HEADER = "The relation must be one of the following:"
     INST_FOOTER = "And the result must be provided in JSON format."
-
 
     def __init__(self, relations : pd.DataFrame, examples : Optional[dict] = None):
         self.relations = relations
@@ -84,7 +89,7 @@ class RelationExtractionPromptBuilder:
         prompt = FewShotPromptTemplate(
             examples=self.examples, 
             example_prompt=example_prompt, 
-            suffix=self.EXAMPLE_INPUT,
+            suffix=self.EXAMPLE_TEMPLATE_FINAL,
             prefix=prefix_prompt,
             input_variables=["text"])
 
@@ -107,6 +112,32 @@ class RelationExtractionPromptBuilder:
 
         return final_prompt
 
+def build_prompt(
+        rel_df : pd.DataFrame, 
+        ex_df : pd.DataFrame = None,
+        *,
+        random_example_selection : bool = True,
+        num_examples : int = 2) -> PromptTemplate:
+
+    ex = None
+    if ex_df is not None:
+        ex_df = filter_examples(ex_df,rel_df)
+        ex = reformat_examples(ex_df)
+
+        if random_example_selection:
+            perm = np.random.permutation(len(ex))
+            perm = perm[:num_examples]
+
+            ex = list(map(ex.__getitem__,perm))
+
+        else:
+            ex = ex[:num_examples]
+    
+    repb = RelationExtractionPromptBuilder(rel_df,ex)
+    prompt = repb.get_prompt()
+
+    return prompt
+
 def _build_parser():
     parser = ArgumentParser()
     
@@ -117,8 +148,8 @@ def _build_parser():
     input_group.add_argument("--examples", help="Filepath of the \".csv\" file containing examples to use for few-shot.")
 
     behaviour_group = parser.add_argument_group("Behaviour options")
-    behaviour_group.add_argument("--num_examples", type=int, default=2, help="Maximum number of examples to use.")
-    behaviour_group.add_argument("--example_selection", choices=["linear","random"], default="random", help="How to choose the examples to use.")
+    behaviour_group.add_argument("--num_examples", type=int, default=3, help="Maximum number of examples to use.")
+    behaviour_group.add_argument("--example_selection", choices=["sequential","random"], default="sequential", help="How to choose the examples to use.")
 
     return parser
 
@@ -127,37 +158,29 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     rel_df = pd.read_csv(args.relations)
-    tgt_df = pd.read_csv(args.target)
+    ex_df = None
+    if args.examples:
+        ex_df = pd.read_csv(args.examples)
 
+    tgt_df = pd.read_csv(args.target)
     tgt_df = filter_examples(tgt_df,rel_df)
     tgt = reformat_examples(tgt_df)
 
-    ex = None
-    if args.examples:
-        ex_df = pd.read_csv(args.examples)
-        ex_df = filter_examples(ex_df,rel_df)
-
-        ex = reformat_examples(ex_df)
-
-        if args.example_selection == "linear":
-            ex = ex[:args.num_examples]
-        else:
-            perm = np.random.permutation(len(ex))
-            perm = perm[:args.num_examples]
-
-            ex = list(map(ex.__getitem__,perm))
-    
-    repb = RelationExtractionPromptBuilder(rel_df,ex)
-    prompt = repb.get_prompt()
+    prompt = build_prompt(
+        rel_df=rel_df,
+        ex_df=ex_df,
+        random_example_selection=(args.example_selection == "random"),
+        num_examples=args.num_examples)
 
     for e in tgt:
         p = prompt.format(text=e["text"])
+        
         print(p)
 
         print()
 
         print("### ANNOTATION")
-        print(e["relations"])
+        print(e["relations_text"])
         print("### END ANNOTATION")
 
         print()
