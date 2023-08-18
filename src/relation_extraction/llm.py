@@ -5,6 +5,8 @@ import torch
 
 import pandas as pd
 
+import json
+
 from argparse import ArgumentParser
 from importlib import import_module
 import warnings
@@ -34,6 +36,7 @@ def build_llm(
             },
             device=device
         )
+
 
     elif provider == "GPT4All":
         if model_locator is None:
@@ -133,12 +136,14 @@ if __name__ == "__main__":
 
 
     ## Test
+    result = []
     for e in tgt:
         p = prompt.format(text=e["text"])
-        print(p,end="")
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             out_ = model.predict(p)
-        print(out_)
+        
+        result.append(dict(context=e["text"],model_prediction=out_))
 
+    json.dump(result,sys.stdout)
