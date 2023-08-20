@@ -1,5 +1,7 @@
+from heapq import merge
 from .relation_utils import read_relations
 
+import numpy as np
 import pandas as pd
 
 from difflib import SequenceMatcher
@@ -36,14 +38,16 @@ def get_matching_relations(pred_df,gold_df,overlap_prop=0.5):
     merged_df = merged_df[merged_df.right_entity_y.notna()]
     merged_df = merged_df[merged_df.right_entity_x.notna()]
     merged_df = merged_df.groupby(["left_entity","relation","right_entity_y"]).first().reset_index() # Dont allow multiple predictions per relation
-
-   
+    merged_df = merged_df.groupby(["left_entity","relation","right_entity_x"]).first().reset_index() # Dont allow multiple predictions per relation
 
     return merged_df
 
-def compute_scores(pred_df : pd.DataFrame, gold_df : pd.DataFrame):
+def compute_scores(
+        pred_df : pd.DataFrame, 
+        gold_df : pd.DataFrame,
+        overlap_prop : float = 0.5):
     #merged_df = pd.merge(pred_df,gold_df)
-    merged_df = get_matching_relations(pred_df,gold_df)
+    merged_df = get_matching_relations(pred_df,gold_df,overlap_prop)
     
     relations = set(pred_df.relation.values) | set(gold_df.relation.values)
     relations = list(relations)
@@ -93,7 +97,12 @@ def _build_parser():
     parser.add_argument("--predictions",required=True,help="Path of the \".csv\" file containing the system relation predictions.")
     parser.add_argument("--gold",required=True,help="Path of the \".csv\" file containing the gold relations.")
 
-    parser.add_argument("--relations",help="Evaluate only on the target relations that appear in the provided relations file.")
+    relation_parser = parser.add_mutually_exclusive_group()
+    relation_parser.add_argument("--relations",help="Evaluate only on the target relations that appear in the provided relations file.")
+    relation_parser.add_argument("--relations_csv",help="Evaluate only on the target relations that appear in the provided relations csv file.")
+
+    behavior_parser = parser.add_argument_group("Behaviour")
+    behavior_parser.add_argument("--allowed_overlap", type=float, default=0.3, help="Allowed overlap between prediciton and Gold strings.")
 
     return parser
 
@@ -108,12 +117,17 @@ if __name__ == "__main__":
     if args.relations:
         with open(args.relations,"r") as rel_file:
             rel_df = read_relations(rel_file)
-
         gold_df_mask = gold_df.relation.apply(set(rel_df["rel_name"].values).__contains__)
-        gold_df = gold_df[gold_df_mask]
+    elif args.relations_csv:
+        with open(args.relations_csv,"r") as rel_file:
+            rel_df = pd.read_csv(rel_file)
+        gold_df_mask = gold_df.relation.apply(set(rel_df["prop"].values).__contains__)
+    else:
+        gold_df_mask = np.ones(len(gold_df))
+    
+    gold_df = gold_df[gold_df_mask]
 
-    scores_df = compute_scores(pred_df,gold_df)
-
+    scores_df = compute_scores(pred_df,gold_df,overlap_prop=args.allowed_overlap)
     scores_df.to_csv(sys.stdout)
 
 

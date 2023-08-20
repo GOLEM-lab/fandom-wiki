@@ -5,6 +5,8 @@ from langchain.prompts.prompt import PromptTemplate
 import pandas as pd
 import numpy as np
 
+import json
+
 from enum import Enum, EnumMeta
 from typing import List, Dict, Optional
 
@@ -33,7 +35,7 @@ def reformat_examples(example_df : pd.DataFrame) -> List[Dict[str,str]]:
 
     def make_relations_prettydict(df : pd.DataFrame):
         records = df.to_dict(orient="records")
-        records = pprint.pformat(records)
+        records = json.dumps(records)
         records = records.replace("{","{{")
         records = records.replace("}","}}")
 
