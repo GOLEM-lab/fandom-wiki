@@ -50,6 +50,7 @@ def compute_scores(
     merged_df = get_matching_relations(pred_df,gold_df,overlap_prop)
     
     relations = set(pred_df.relation.values) | set(gold_df.relation.values)
+    relations = set(gold_df.relation.values)
     relations = list(relations)
 
     # Compute micro
@@ -126,6 +127,7 @@ if __name__ == "__main__":
         gold_df_mask = np.ones(len(gold_df))
     
     gold_df = gold_df[gold_df_mask]
+
 
     scores_df = compute_scores(pred_df,gold_df,overlap_prop=args.allowed_overlap)
     scores_df.to_csv(sys.stdout)
