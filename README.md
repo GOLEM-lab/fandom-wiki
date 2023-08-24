@@ -147,6 +147,10 @@ We have thus far extracted the output (answers) from the QA segment of the pipel
 
 Where `<answers_file>` is the previously obtained output and `<output_relations>` will be a `.csv` file with triples, and possibly a confidence score of the system for each triple. As with the previous script, there are a lot of options to tailor the behaviour of the script to each users need. Once again, consult them trough the `--help` argument.
 
+There is only one thing left to do, which is to evaluate the generated relations, since this part of the workflow is common to every relation extraction method it will be discussed in a separate section. We will now comment on the other implemented approach, namely the use of LLMs to solve the task direclty.
+
+
+
 
 
 
