@@ -30,11 +30,11 @@ _Technical Detail_: Most scripts (python or bash) use standard input/output stre
 
 To read the links from a file that lists them (such as `data/fandom_links.txt`):
 
-`scripts/download_fandom_data.sh < data/fandom_links.txt` 
+`scripts/download_fandom_data.sh < data/fandom_links.txt`
 
 or using pipes `|`:
 
-`cat data/fandom_links.txt | scripts/download_fandom_data.sh` 
+`cat data/fandom_links.txt | scripts/download_fandom_data.sh`
 
 In the above command, `cat` may be substituted by any program that produces (in stdout) links in the described format, for instance a web-crawler that identifies the pages of interest.
 
@@ -66,7 +66,7 @@ data
 ```
 
 #### Customizing the Data Download Pipeline
-For **large-scale download** operations, flooding the web-servers with requests typically sets off anti-saturation mechanisms from the servers. As a consequence the download speed capacity is largely limited and sometimes slowed down to a halt, for instance if the server blacklists the IP temporarily as a preemptive measure against DDoS attacks. 
+For **large-scale download** operations, flooding the web-servers with requests typically sets off anti-saturation mechanisms from the servers. As a consequence the download speed capacity is largely limited and sometimes slowed down to a halt, for instance if the server blacklists the IP temporarily as a preemptive measure against DDoS attacks.
 
 There are many strategies that may be employed to mitigate this situation. One reliable solution when applicable, is to exchange metadata with the web-server to ensure that request policies are followed and, possibly, announce the good intent of the requests (when the web-server implements such policies). Most download managers can be configured to behave _perceptivelly_ like described.
 
@@ -85,15 +85,15 @@ Parsing WikiText elements involves extracting structured units of data from a Wi
 
 To perform WikiText parsing `src/fandom_extraction/wikitext_extract.py` is a python script that has a variety of options that enable different extraction, filtering and cleaning operations. The script works by reading WikiText from standard input, it then writes the parsed elements in `JSON` format to standard output.
 
-To showcase a particular use-case, lets consider: 
+To showcase a particular use-case, lets consider:
 
-`cat data/wikis/*/* | python src/fandom_extraction/wikitext_extract.py --templates Character character "Character Infobox" "Individual infobox" --template_param_wl name sex born nation affiliation job actor --clean_xml > data/infobox_templates.json`
+`cat data/wikis/*/* | python -m src.fandom_extraction.wikitext_extract --templates Character character "Character Infobox" "Individual infobox" --template_param_wl name sex born nation affiliation job actor --clean_xml > data/infobox_templates.json`
 
 Breaking the command down:
 
 * `cat data/wikis/*/*` Concatenates all (previously) donwloaded fandom articles
-* `python src/fandom_extraction/wikitext_extract.py` The wikitext parsing script, it consumes the concatenated wikitext
-* `--templates Character character "Character Infobox" "Individual infobox"` Extract the templates that match the given template names. In this case the template names correspond to the Infobox generation templates. 
+* `python src.fandom_extraction.wikitext_extract` The wikitext parsing script ran as a python module, it consumes the concatenated wikitext
+* `--templates Character character "Character Infobox" "Individual infobox"` Extract the templates that match the given template names. In this case the template names correspond to the Infobox generation templates.
 * `--template_param_wl name sex born nation affiliation job actor` Store only the given parameters (infobox fields in this case) from the extracted templates.
 * `--clean_xml` Clean the XML data in the WikiText before parsing. XML data is often not interesting (page styling for example) so we don't want it in the output. Cleaning XML also makes parsing faster as there is less text to parse and less complexity.
 * `> data/infobox_templates.json` Redirect the output to an output file (instead of letting it print in the terminal).
@@ -108,9 +108,45 @@ and
 
 There are plenty other options that the script accepts which can be consulted in detail by using the parameter `--help`
 
-`python src/fandom_extraction/wikitext_extract.py --help`
+`python -m src.fandom_extraction.wikitext_extract --help`
 
 Finally if the WikiText parser implementation is of interest, it is available in the python module `src/fandom_extraction/wikitext_regex.py`
+
+### Relation Extraction from Text
+
+At the time of writing this guide, two fundamentally distinct methods have been implemented for relation extraction:
+
+1. Reducing Relation Extraction to a Question Answering Task.
+2. LLM prompting for direct Relation Extraction.
+
+We shall next briefly describe each approach.
+
+#### Reducing Relation Extraction to a Question Answering Task
+
+In this approach we reduce the task of extracting a relation triple `<subject>:<relation>:<object>`, to answering a question of the type `"What entity has relation <relation> with <subject>?"` or possibly a more natural question for the given `subject` and `relation`. E.g. to extract the relation `<Harry Potter>:<enemy of>:<Voldemort>`, we might ask the question `"Who is an enemy of Harry Potter?"`. We then feed the question, together with the text that relation extraction is to be performed on, as context to an Extractive-Question-Answering system (in particular, we used a QA fine-tunned LM). The answer outputed by the system (if any), is then a `<object>` candidate, which we might keep or discard according to different criteria (such as the confidence of the QA system in the answer).
+
+To implement this scheme three data sources are needed:
+1. Question templates associated to each relation (e.g. ). Each relation might have more than one associated question.
+2. List of entities to place as subject in the relations (e.g. )
+3. Piece of text to perform relation extraction on.
+
+From the first two (1,2), all the possible triples which have a subject from (2) and a relation from (1) are considered. Some optimization is possible if entities have a class annotated and the relations specify the classes that they support. Then the questions associated to all the triples are created and fed to the QA system along with context, thus generating answers to the questions. To do this run:
+
+`python -m src.relation_extraction.qa --entities <entites_file> --relations <relations_file> < <context_file> > <output_file>`
+
+for example:
+
+`python -m src.relation_extraction.qa --entities data/meta/test_entities.csv --relations data/meta/annotations_relations_handcrafted.txt < data/wikis/harrypotter/Hermione_Granger.txt > results/hermione_answers.json`
+
+The context (`<context_file>`) is formatless text, the expected format and fields for the rest of data sources can be checked in the files referenced in the example. The script outputs a `.json` file that contains the generated answers for each question in `<relations_file>`.
+Additional options are available through command line arguments (e.g. to controll the underlying QA model, and its parameters), the documentation can be accessed through `python -m src.relation_extraction.qa --help`.
+
+We have thus far extracted the output (answers) from the QA segment of the pipeline, however for most purposes (benchmarking, compatibility, knowledge graph building, ...) we are interested in relation triples, so it is time to reduce answers into triples. To that end, we can employ the following script:
+
+`python -m src.relation_extraction.relations_from_answers --answers <answers_file> > <output_relations>`
+
+Where `<answers_file>` is the previously obtained output and `<output_relations>` will be a `.csv` file with triples, and possibly a confidence score of the system for each triple. As with the previous script, there are a lot of options to tailor the behaviour of the script to each users need. Once again, consult them trough the `--help` argument.
+
 
 
 
