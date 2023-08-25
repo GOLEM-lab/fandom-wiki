@@ -149,6 +149,25 @@ Where `<answers_file>` is the previously obtained output and `<output_relations>
 
 There is only one thing left to do, which is to evaluate the generated relations, since this part of the workflow is common to every relation extraction method it will be discussed in a separate section. We will now comment on the other implemented approach, namely the use of LLMs to solve the task direclty.
 
+#### LLM prompting for direct Relation Extraction
+
+To use an LLM to solve the task we must feed it an appropriate __prompt__ that gives the LLM clear instructions on what the task consists on, and what the output text is expected to look like (i.e. the format). Additionally one may include examples of input-output pairs so as to illustrate the task at hand (fewshot approach). Finally, we include a new instance of the relation extraction task in the prompt and feed it to the model.
+
+To that end, we created a prompt template that describes each target relation, and asks for the output in `JSON` format. It then provides some cherry-picked examples, each one consists on a passage where the relations must be found followed by the relations themselves in `JSON` format (a list of dictionaries). To run the system with the prompt we provide the script:
+
+`python -m src.relation_extraction.llm --relations <relations_file> --target <target_file> --examples <examples_file> > <llm_output>`
+
+The output is given in `JSON` format, as a list of maps, where for each map there is a field for the `context` and a field for the llm output (`model_prediction`), for example:
+
+`python -m src.relation_extraction.llm --relations data/meta/cherry_picked_relations.csv --target data/annotation/harry_potter_annotations.csv --examples data/fewshot/cherry_picked_examples.csv > results/llm_output.json`
+
+With a bit of luck, the model will produce the correct output in the desired format, however the quality of the output greatly depends on the complexity (parameter count and training scheme) of the underlying LLM. In any case it is always desirable to validate the output so that it conforms to the given specification. To do this use:
+
+`python -m src.relation_extraction.relations_from_llm_output --llm_output <llm_output> --relations <relations_file> > <llm_relations>`
+
+where `<llm_output>` is the output from the previous script and `<relations_file>` is the same for both scripts, the outupt is given as a `.csv` file of triples, which complies with the format (column names) that is used for the QA relation extraction method. As with all scripts, there are many options to look at, which can be consulted through `--help`.
+
+
 
 
 
