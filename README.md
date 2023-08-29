@@ -177,7 +177,7 @@ To perform evaluation of the extracted triples (as extracted in `.csv` format) a
 
 where `<gold_file>` contains the ground-truth triples in the same format as `<predictions_file>` (i.e. `.csv` with same columns). Additionally, a `--relations <relations_file>` option may be used to constrain the evaluation to a reduced set of relations, which can prove useful in many instances. `<score_file>` is a `.csv` file that contains __precision__, __recall__ and __F1__ scores for each relation individually and as aggregated __microaverage__ and __macroaverage__ scores. There are other options available to control the strictness when comparing relation which can be consulted with `--help`.
 
-## Discussion and Comparison of Relation Extraction Methods.
+## Discussion and Comparison of Relation Extraction Methods
 
 The two implemented relation extraction techniques differ significantly, and may thus be applied in different scenarios and for different needs. For example, the __QA reduction__ pipeline offers more interpretable results since there is an intermediate step, where the QA system (which is a blackbox deeplearning system) answers specific questions on context. Inspecting these answers can bring up different failure modes and help identify strenghts and weaknesses, as well as aiding in the construction of appropriate relation-to-question reductions, giving, as a consequesnce, a high degree of customizability. The __LLM prompting__ method offers no such thing as the output of the blackbox system are directly the relation triples, however there is some headroom for customization by means of adapting the __prompt__. 
 
