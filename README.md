@@ -183,7 +183,7 @@ The two implemented relation extraction techniques differ significantly, and may
 
 On the other hand, the observed performance when using __LLM prompting__ (with bloom, the biggest tested LLM with 176B param) is considerably superior to that of __QA reduction__ (see table below). 
 
-| | micro-precision | macro-precision | micro-recall | macro-recall | micro-F1 | macro-F1 |
+| | Precision (micro) | Precision (macro) | Recall (micro) | Recall (macro) | F1 (micro)| F1 (macro) |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | __QA reduction__ (Roberta-Large) | 33.1 | 10.5 | __55.3__ | 18.8 | 32.3 | 13.4 |
 |  __LLM prompting__ (Bloom) | __81.9__ | __40.5__ | 41.8 | __39.8__ | __45.9__ | __40.2__ |
