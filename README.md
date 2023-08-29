@@ -167,7 +167,15 @@ With a bit of luck, the model will produce the correct output in the desired for
 
 where `<llm_output>` is the output from the previous script and `<relations_file>` is the same for both scripts, the outupt is given as a `.csv` file of triples, which complies with the format (column names) that is used for the QA relation extraction method. As with all scripts, there are many options to look at, which can be consulted through `--help`.
 
+### Evaluating Relation Extraction Performance
 
+Once we have extracted relation triples using our preferred method, we may want to evaluate the quality of these triples by comparing them with ground-truth data. Provided we have such facilities, or that we at least have ground-truth triples for a small subset of the task instances, we can use this evaluation and the performance scores that come of it to get an idea of the reliability of the relation-extraction pipeline. This validation step grants trust (or distrust) in the system as an automatic annotation tool, which is essential for pipelines that include followup steps.
+
+To perform evaluation of the extracted triples (as extracted in `.csv` format) a handy script is provided:
+
+`python -m src.utils.compute_eval_score --predictions <predictions_file> --gold <gold_file> > <scores_file>`
+
+where `<gold_file>` contains the ground-truth triples in the same format as `<predictions_file>` (i.e. `.csv` with same columns). Additionally, a `--relations <relations_file>` option may be used to constrain the evaluation to a reduced set of relations, which can prove useful in many instances. `<score_file>` is a `.csv` file that contains __precission__, __recall__ and __F1__ scores for each relation individually and as aggregated __microaverage__ and __macroaverage__ scores. There are other options available to control the strictness when comparing relation which can be consulted with `--help`.
 
 
 
