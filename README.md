@@ -175,7 +175,30 @@ To perform evaluation of the extracted triples (as extracted in `.csv` format) a
 
 `python -m src.utils.compute_eval_score --predictions <predictions_file> --gold <gold_file> > <scores_file>`
 
-where `<gold_file>` contains the ground-truth triples in the same format as `<predictions_file>` (i.e. `.csv` with same columns). Additionally, a `--relations <relations_file>` option may be used to constrain the evaluation to a reduced set of relations, which can prove useful in many instances. `<score_file>` is a `.csv` file that contains __precission__, __recall__ and __F1__ scores for each relation individually and as aggregated __microaverage__ and __macroaverage__ scores. There are other options available to control the strictness when comparing relation which can be consulted with `--help`.
+where `<gold_file>` contains the ground-truth triples in the same format as `<predictions_file>` (i.e. `.csv` with same columns). Additionally, a `--relations <relations_file>` option may be used to constrain the evaluation to a reduced set of relations, which can prove useful in many instances. `<score_file>` is a `.csv` file that contains __precision__, __recall__ and __F1__ scores for each relation individually and as aggregated __microaverage__ and __macroaverage__ scores. There are other options available to control the strictness when comparing relation which can be consulted with `--help`.
+
+## Discussion and Comparison of Relation Extraction Methods.
+
+The two implemented relation extraction techniques differ significantly, and may thus be applied in different scenarios and for different needs. For example, the __QA reduction__ pipeline offers more interpretable results since there is an intermediate step, where the QA system (which is a blackbox deeplearning system) answers specific questions on context. Inspecting these answers can bring up different failure modes and help identify strenghts and weaknesses, as well as aiding in the construction of appropriate relation-to-question reductions, giving, as a consequesnce, a high degree of customizability. The __LLM prompting__ method offers no such thing as the output of the blackbox system are directly the relation triples, however there is some headroom for customization by means of adapting the __prompt__. 
+
+On the other hand, the observed performance when using __LLM prompting__ (with bloom, the biggest tested LLM with 176B param) is considerably superior to that of __QA reduction__ (see table below). 
+
+| | micro-precision | macro-precision | micro-recall | macro-recall | micro-F1 | macro-F1 |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| __QA reduction__ (Roberta-Large) | 33.1 | 10.5 | __55.3__ | 18.8 | 32.3 | 13.4 |
+|  __LLM prompting__ (Bloom) | __81.9__ | __40.5__ | 41.8 | __39.8__ | __45.9__ | __40.2__ |
+
+
+Finally, while both systems are based on deeplearning language models, the size of the models are about three orders of magnitude apart, the __LLM prompting__ technique requireing around __1TB__ of memory to run, which in turn often forces the use of __CPU__ nodes rather than __GPU__ slowing down the process further. In case compute resources are not locally available, another option is using cloud inference services such as the one provided by __HuggingFace__ or __OpenAI__ (for GPT / ChatGPT), although these services always require a paid subscription.
+
+In the next table we outlie some of the differences of both approaches:
+
+| | QA reduction | LLM prompting |
+| ------------- | ------------- | ------------- |
+| __Performance__ | Baseline | Moderate |
+| __Interpretability__ | Moderate | None |
+| __Customizability__ | High  | Moderate |
+| __Compute Requirements__ | Moderate | Very High |
 
 
 
