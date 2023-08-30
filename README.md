@@ -188,10 +188,17 @@ On the other hand, the observed performance when using __LLM prompting__ (with b
 | __QA reduction__ (Roberta-Large) | 33.1 | 10.5 | __55.3__ | 18.8 | 32.3 | 13.4 |
 |  __LLM prompting__ (Bloom) | __81.9__ | __40.5__ | 41.8 | __39.8__ | __45.9__ | __40.2__ |
 
+QA Reduction            |  LLM Prompting
+:-------------------------:|:-------------------------:
+![](results/imgs/qa_reduction_matrix.png)  |  ![](results/imgs/llm_prompting_matrix.png)
+
+  
+
+
 
 Finally, while both systems are based on deeplearning language models, the size of the models are about three orders of magnitude apart, the __LLM prompting__ technique requireing around __1TB__ of memory to run, which in turn often forces the use of __CPU__ nodes rather than __GPU__ slowing down the process further. In case compute resources are not locally available, another option is using cloud inference services such as the one provided by __HuggingFace__ or __OpenAI__ (for GPT / ChatGPT), although these services always require a paid subscription.
 
-In the next table we outlie some of the differences of both approaches:
+In the next table we outline some of the differences of both approaches:
 
 | | QA reduction | LLM prompting |
 | ------------- | ------------- | ------------- |
