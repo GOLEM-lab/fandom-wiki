@@ -24,20 +24,20 @@ def predictions_text_to_dict(llm_output : dict):
     
     res = []
     for d in dict_candidates:
+        d_tmp = d
         try:
             d = d.replace("'object'",'"object"').replace("'subject'",'"subject"').replace("'relation'",'"relation"')
-            d = d.replace('\\"object"\\','"object"').replace('\\"subject"\\','"subject"').replace('\\"relation"\\','"relation"')
+            d = d.replace('\\"object\\"','"object"').replace('\\"subject\\"','"subject"').replace('\\"relation\\"','"relation"')
             d = _double_quotes_regex.sub('"',d)
             d = _newline_regex.sub(" ",d)
             d = _internal_double_quotes_regex.sub("\\\"",d)
 
-            r = json.loads(d)    
+            r = json.loads(d) 
             res.append(r)
         except json.JSONDecodeError as e:
-            sys.stderr.write("{}\n{}\n".format(d,e))
+            sys.stderr.write("{}\n{}\n".format(d_tmp,e))
 
     return res
-
 
 
 def _build_parser():
@@ -51,6 +51,9 @@ def _build_parser():
 
     return parser
 
+column_map = {"subject" : "left_entity",
+                "relation" : "relation",
+                "object" : "right_entity"}
 
 if __name__ == "__main__":
     parser = _build_parser()
@@ -68,8 +71,10 @@ if __name__ == "__main__":
     predictions = predictions_text_to_dict(llm_output)
     pred_df = pd.DataFrame(predictions)
 
-    pred_df.columns = ["right_entity","relation","left_entity"]
-    pred_df = pred_df[pred_df.columns[::-1]]
+    
+
+    pred_df.rename(column_map,axis=1,inplace=True)
+    pred_df = pred_df[[*column_map.values()]]
 
     if rels is not None:
         pred_df["relation"] = pred_df["relation"].apply(rels.get)
