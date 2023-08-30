@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
 
     scores_df = compute_scores(pred_df,gold_df,overlap_prop=args.allowed_overlap)
-    scores_df.to_csv(sys.stdout)
+    scores_df.to_csv(sys.stdout,index=False)
 
 
 

@@ -6,6 +6,7 @@ data/*
 !data/annotation
 
 results/
+!results/imgs
 env/
 env_langchain/
 
