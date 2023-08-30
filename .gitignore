@@ -5,7 +5,7 @@ data/*
 !data/fewshot
 !data/annotation
 
-results/
+results/*
 !results/imgs
 env/
 env_langchain/
