@@ -32,7 +32,7 @@ function eval_file {
     python -m src.utils.compute_eval_score \
         --predictions $PIPE \
         --gold /dev/stdin \
-        --relations $RELATION_FILE > $OUTPUT_FILE
+        --relations_csv $RELATION_FILE > $OUTPUT_FILE
 
     rm $PIPE
 
