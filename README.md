@@ -7,17 +7,16 @@ This repo contains the following:
 * Python programs that can either serve as modules or be used as stand-alone scripts (`src/`)
 * Bash scripts that perform very specialized operations (`scripts/`)
 
-- [fandom-wiki](#fandom-wiki)
-  - [Setup and Dependencies](#setup-and-dependencies)
-  - [Usage of Main Functionalities](#usage-of-main-functionalities)
-    - [Download and Parse Web Data](#download-and-parse-web-data)
-      - [Customizing the Data Download Pipeline](#customizing-the-data-download-pipeline)
-    - [Parsing WikiText Elements](#parsing-wikitext-elements)
-    - [Relation Extraction from Text](#relation-extraction-from-text)
-      - [Reducing Relation Extraction to a Question Answering Task](#reducing-relation-extraction-to-a-question-answering-task)
-      - [LLM prompting for direct Relation Extraction](#llm-prompting-for-direct-relation-extraction)
-    - [Evaluating Relation Extraction Performance](#evaluating-relation-extraction-performance)
-  - [Discussion and Comparison of Relation Extraction Methods](#discussion-and-comparison-of-relation-extraction-methods)
+- [Setup and Dependencies](#setup-and-dependencies)
+- [Usage of Main Functionalities](#usage-of-main-functionalities)
+  - [Download and Parse Web Data](#download-and-parse-web-data)
+    - [Customizing the Data Download Pipeline](#customizing-the-data-download-pipeline)
+  - [Parsing WikiText Elements](#parsing-wikitext-elements)
+  - [Relation Extraction from Text](#relation-extraction-from-text)
+    - [Reducing Relation Extraction to a Question Answering Task](#reducing-relation-extraction-to-a-question-answering-task)
+    - [LLM prompting for direct Relation Extraction](#llm-prompting-for-direct-relation-extraction)
+  - [Evaluating Relation Extraction Performance](#evaluating-relation-extraction-performance)
+- [Discussion and Comparison of Relation Extraction Methods](#discussion-and-comparison-of-relation-extraction-methods)
 
 
 ## Setup and Dependencies
