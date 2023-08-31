@@ -7,6 +7,7 @@ This repo contains the following:
 * Python programs that can either serve as modules or be used as stand-alone scripts (`src/`)
 * Bash scripts that perform very specialized operations (`scripts/`)
 
+## Table of Contents
 - [Setup and Dependencies](#setup-and-dependencies)
 - [Usage of Main Functionalities](#usage-of-main-functionalities)
   - [Download and Parse Web Data](#download-and-parse-web-data)
