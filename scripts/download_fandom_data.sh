@@ -34,19 +34,23 @@ function process_line {
     if [ ! -z "$OUT_DIR" ]; then
 
         # Extract Wiki and Article Name
-        WIKI_NAME=$(echo "$LINE_READ" | grep -oP "https://(.*)\.fandom")
-        ART_NAME=$(echo "$LINE_READ" | grep -oP "wiki/(.*)$") 
+        #WIKI_NAME=$(echo "$LINE_READ" | grep -oP "https://(.*)\.fandom")
+        #ART_NAME=$(echo "$LINE_READ" | grep -oP "wiki/(.*)$") 
+        WIKI_NAME=$(echo "$LINE_READ" | awk '/https:\/\/[^ ]*\.fandom/ {match($0, /https:\/\/([^ ]*)\.fandom/); print "https://" substr($0, RSTART+8, RLENGTH-8)}')
+        ART_NAME=$(echo "$LINE_READ" | awk '/wiki\/(.*)$/ {match($0, /wiki\/(.*)$/); print "wiki/" substr($0, RSTART+5, RLENGTH-5)}') 
 
         WIKI_NAME="${WIKI_NAME//"https://"/}"
         WIKI_NAME="${WIKI_NAME//".fandom"/}"
         ART_NAME="${ART_NAME//"wiki/"/}"
+        WIKI_NAME="${WIKI_NAME//\"/}"
+        ART_NAME="${ART_NAME//\"/}"
 
-        [ ! -d "${OUT_DIR}/${WIKI_NAME}" ] && mkdir -p "${OUT_DIR}/${WIKI_NAME}" 
+        [ ! -d "${OUT_DIR}/${WIKI_NAME}/" ] && mkdir -p "${OUT_DIR}/${WIKI_NAME}" 
         echo "$WIKITEXT" > "${OUT_DIR}/${WIKI_NAME}/${ART_NAME}.txt"
     else
         echo "$WIKITEXT"
     fi
-
+    
 }
 
 # Process lines
