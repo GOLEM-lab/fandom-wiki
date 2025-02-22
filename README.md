@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/606121201.svg)](https://doi.org/10.5281/zenodo.14911366
+[![DOI](https://zenodo.org/badge/606121201.svg)]
 Vallejo Arginzoniz, E. and Pianzola, F. (2023). Fandom-wiki scraper. https://doi.org/10.5281/zenodo.14911366
 
 # Fandom-wiki
